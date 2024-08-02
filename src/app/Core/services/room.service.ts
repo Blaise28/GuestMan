@@ -18,4 +18,11 @@ export class RoomService {
       }),
     );
   }
+  getRoom(id: number): Observable<unknown> {
+    return this.apiService.get(`/rooms/${id}/`).pipe(
+      map((data) => {
+        return data;
+      }),
+    );
+  }
 }

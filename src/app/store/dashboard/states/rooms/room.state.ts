@@ -34,7 +34,7 @@ export interface RoomListModel {
 export class RoomState {
   constructor(private roomService: RoomService) {}
   @Selector()
-  static getPicture(state: RoomStateModel): RoomStateModel {
+  static getRooms(state: any): any {
     return state;
   }
 

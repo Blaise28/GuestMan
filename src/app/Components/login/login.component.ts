@@ -10,11 +10,12 @@ import {
 import { MaterialModule } from '../../material/material.module';
 import { Router, RouterLink } from '@angular/router';
 import { Store } from '@ngxs/store';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../../Core/services';
 import { HttpClient } from '@angular/common/http';
 import { setToken } from '../../store/auth/auth.actions';
+import { AuthState } from '../../store/auth/auth.state';
 
 @Component({
   selector: 'app-login',
@@ -26,6 +27,8 @@ import { setToken } from '../../store/auth/auth.actions';
 export class LoginComponent implements OnInit {
   private _store = inject(Store);
   private _auth = inject(AuthService);
+  isAuthenticated$!: Observable<boolean | undefined>;
+  isAuthenticated!: boolean | undefined;
 
   isSubmitting = false;
   authForm!: FormGroup;
@@ -41,9 +44,17 @@ export class LoginComponent implements OnInit {
       username: ['', [Validators.required]],
       password: ['', [Validators.required, Validators.minLength(8)]],
     });
+    this.isAuthenticated$ = this._store.select(AuthState.isAuthenticated);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.isAuthenticated$.subscribe((isAuthenticated) => {
+      this.isAuthenticated = isAuthenticated;
+      if (isAuthenticated) {
+        this.router.navigate(['/l']);
+      }
+    });
+  }
 
   connectSub() {
     this.isSubmitting = true;

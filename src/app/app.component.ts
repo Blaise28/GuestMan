@@ -4,8 +4,6 @@ import { LoginComponent } from './Components/login/login.component';
 import { LayoutComponent } from './layout/layout/layout.component';
 import { Store } from '@ngxs/store';
 import { getPictureAction } from './store/dashboard/states/pictures/picture.actions';
-import { Observable } from 'rxjs';
-import { AuthState } from './store/auth/auth.state';
 import { getRoomAction } from './store/dashboard/states/rooms/room.actions';
 import { setToken } from './store/auth/auth.actions';
 
@@ -20,12 +18,8 @@ export class AppComponent {
   title = 'GuestMan';
   private _store = inject(Store);
   private _router = inject(Router);
-  isAuthenticated$!: Observable<unknown>;
-  isAuthenticated!: boolean;
 
-  constructor() {
-    this.isAuthenticated$ = this._store.select(AuthState.isAuthenticated);
-  }
+  constructor() {}
 
   ngOnInit(): void {
     const token = localStorage.getItem('accessToken');
@@ -33,9 +27,8 @@ export class AppComponent {
       this._store.dispatch(new setToken());
       this._store.dispatch(new getPictureAction());
       this._store.dispatch(new getRoomAction());
-      //this._router.navigate(['/l']);
     } else {
-      this._router.navigate(['/']);
+      //
     }
   }
 }

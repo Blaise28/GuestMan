@@ -18,4 +18,11 @@ export class PictureService {
       }),
     );
   }
+  getPictureByRoom(id: number) {
+    return this.apiService.get(`/pictures/?room_id=${id}`).pipe(
+      map((data) => {
+        return data;
+      }),
+    );
+  }
 }

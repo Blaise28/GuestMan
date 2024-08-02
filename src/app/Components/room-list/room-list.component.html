@@ -1,1 +1,15 @@
-<app-room-card></app-room-card>
+<div>
+  <div class="my-3">
+    <h1>{{ roomList.count }} <span>Room(s)</span></h1>
+  </div>
+  <div class="list row">
+    @for (item of roomList.results; track $index) {
+      <div class="col-4">
+        <app-room-card
+          [room]="item"
+          routerLink="/l/details/ {{ item.id }}"
+        ></app-room-card>
+      </div>
+    }
+  </div>
+</div>

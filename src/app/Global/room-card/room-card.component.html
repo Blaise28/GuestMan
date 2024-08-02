@@ -5,14 +5,27 @@
     </div>
     <div class="col-md-8">
       <div class="card-body">
-        <h5 class="card-title">Card title</h5>
-        <p class="card-text">
-          This is a wider card with supporting text below as a natural lead-in
-          to additional content. This content is a little bit longer.
+        <h5 class="card-title">
+          Room N0{{ room.numero }}
+          @if (room.is_active) {
+            <small class="ms-3 text-success">Active</small>
+          } @else {
+            <small class="ms-3 text-danger">Not Active</small>
+          }
+        </h5>
+        <p class="card-text">{{ room.prix | number }} BIF</p>
+        <p class="card-text text-secondary">
+          {{ room.type }}
         </p>
-        <p class="card-text">
-          <small class="text-muted">Last updated 3 mins ago</small>
-        </p>
+        @if (room.disponibilite) {
+          <p class="card-text">
+            <small class="badge text-bg-success">Disponible</small>
+          </p>
+        } @else {
+          <p class="card-text">
+            <small class="badge text-bg-danger">Non disponible</small>
+          </p>
+        }
       </div>
     </div>
   </div>
