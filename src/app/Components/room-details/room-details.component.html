@@ -4,11 +4,15 @@
     @if (pictures) {
       <div class="container">
         <div class="img-container">
-          <img src="{{ pictures.results[0].image }}" alt="Image" id="preview" />
+          <img
+            src="{{ pictures.results[0]?.image }}"
+            alt="Image"
+            id="preview"
+          />
           <div class="img-prev">
             @for (item of pictures.results; track $index) {
               <div class="img-slide me-2" [ngClass]="{ active: $index === 0 }">
-                <img src="{{ item.image }}" alt="{{ item.id }}" appDemo />
+                <img src="{{ item?.image }}" alt="{{ item?.id }}" appDemo />
               </div>
             }
           </div>
@@ -17,9 +21,9 @@
     }
   </div>
   <div class="col-6">
-    <h2 class="text-secondary mb-4">{{ room.type }}</h2>
-    <h4 class="text-dark fw-light fs-1 mb-3">{{ room.prix }} BIF</h4>
-    @if (room.disponibilite) {
+    <h2 class="text-secondary mb-4">{{ room?.type }}</h2>
+    <h4 class="text-dark fw-light fs-1 mb-3">{{ room?.prix }} BIF</h4>
+    @if (room?.disponibilite) {
       <p class="text-secondary mb-4 fs-5 d-flex align-items-center">
         Reserver : <span class="ms-4 badge text-bg-success">Active</span>
       </p>
@@ -28,7 +32,7 @@
         Reserver : <span class="ms-4 badge text-bg-danger">Not Active</span>
       </p>
     }
-    <p class="text-dark mb-4">{{ room.description }}</p>
+    <p class="text-dark mb-4">{{ room?.description }}</p>
     <div class="d-flex flex-column">
       <span class="fs-5 fw-bold text-dark">Rooms description</span>
       <p class="my-4 text-secondary">

@@ -21,6 +21,11 @@ import { routes } from './app.routes';
 import { PictureState } from './store/dashboard/states/pictures/picture.state';
 import { tokenInterceptor } from './Core/Interceptors/token.interceptor';
 import { RoomState } from './store/dashboard/states/rooms/room.state';
+import { BookingState } from './store/dashboard/states/booking/booking.state';
+import { UserState } from './store/dashboard/states/user/user.state';
+import { ClientState } from './store/dashboard/states/client/client.state';
+import { ProductState } from './store/dashboard/states/product/product.state';
+import { OperatorState } from './store/dashboard/states/operator/operator.state';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -30,7 +35,16 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withFetch()),
     provideHttpClient(withInterceptorsFromDi()),
     provideStore(
-      [AuthState, PictureState, RoomState],
+      [
+        AuthState,
+        PictureState,
+        RoomState,
+        BookingState,
+        UserState,
+        ClientState,
+        ProductState,
+        OperatorState,
+      ],
       // withNgxsStoragePlugin({
       //   keys: ['auth.token.access'],
       // }),
@@ -41,6 +55,11 @@ export const appConfig: ApplicationConfig = {
     Services.AuthService,
     Services.PictureService,
     Services.RoomService,
+    Services.BookingService,
+    Services.ClientService,
+    Services.ProductService,
+    Services.OperatorService,
     Guards.AuthGuard,
+    Guards.StaffGuard,
   ],
 };

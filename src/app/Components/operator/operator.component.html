@@ -1,0 +1,48 @@
+<div class="d-flex align-items-center bg-light rounded p-3 row">
+  <div class="d-flex align-items-center col-3">
+    <div class="p-2 bg-success-subtle rounded">
+      <i class="fa-solid fa-user-group fs-4 text-success"></i>
+    </div>
+    <div class="d-flex flex-column ms-3 text-success-emphasis">
+      <span class="fs-4 fw-bold"> {{ operator.count }} </span>
+      <small>Total Operator</small>
+    </div>
+  </div>
+  <div class="d-flex align-items-center col-3">
+    <div class="p-2 bg-info-subtle rounded">
+      <i class="fa-solid fa-user-clock fs-4 text-info"></i>
+    </div>
+    <div class="d-flex flex-column ms-3 text-info-emphasis">
+      <span class="fs-4 fw-bold">5</span> <small>Operator wait</small>
+    </div>
+  </div>
+</div>
+<div class="table-responsive">
+  <div class="table-option my-4">
+    <h5>Filter</h5>
+  </div>
+  <table class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th>Operator Name</th>
+        <th>Phone</th>
+        <th>Adress</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Date Embauche</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (item of operator.results; track $index) {
+        <tr routerLink="/l/Odetails/ {{ item.id }}">
+          <td class="text-primary">{{ item.nom }} {{ item.prenom }}</td>
+          <td class="text-secondary">{{ item.telephone }}</td>
+          <td>{{ item.adresse }}</td>
+          <td class="text-success">{{ item.email }}</td>
+          <td class="text-info">{{ item.role }}</td>
+          <td>{{ item.date_embauche }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

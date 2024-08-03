@@ -1,0 +1,61 @@
+<h3>Tanents Overview</h3>
+<div class="d-flex align-items-center bg-light rounded p-3 row">
+  <div class="d-flex align-items-center col-3">
+    <div class="p-2 bg-success-subtle rounded">
+      <i class="fa-solid fa-user-group fs-4 text-success"></i>
+    </div>
+    <div class="d-flex flex-column ms-3 text-success-emphasis">
+      <span class="fs-4 fw-bold"> {{ bookingList.count }} </span>
+      <small>Total Tanents</small>
+    </div>
+  </div>
+  <div class="d-flex align-items-center col-3">
+    <div class="p-2 bg-info-subtle rounded">
+      <i class="fa-solid fa-user-clock fs-4 text-info"></i>
+    </div>
+    <div class="d-flex flex-column ms-3 text-info-emphasis">
+      <span class="fs-4 fw-bold">5</span> <small>Tanents wait</small>
+    </div>
+  </div>
+</div>
+<div class="table-responsive">
+  <div class="table-option my-4">
+    <h5>Filter</h5>
+  </div>
+  <table class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th>Tanent Name</th>
+        <th>Contact</th>
+        <th>Room</th>
+        <th>Date Arrivee</th>
+        <th>Date Depart</th>
+        <th>Amount</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (item of bookingList.results; track $index) {
+        <tr routerLink="/l/Tdetails/ {{ item.id }}">
+          <td>{{ item.client.nom }} {{ item.client.prenom }}</td>
+          <td>{{ item.client.telephone }}</td>
+          <td>N0{{ item.chambre.numero }}</td>
+          <td>{{ item.date_arrivee }}</td>
+          <td>{{ item.date_depart }}</td>
+          <td>{{ item.prix_total }}</td>
+          <td>
+            @if (item.status && item.status === "INITIAL") {
+              <span class="status status-initial py-2 px-4">Initial</span>
+            } @else if (item.status && item.status === "RESERVED") {
+              <span class="status status-reserved py-2 px-4">reserved</span>
+            } @else if (item.status && item.status === "CONFIRMED") {
+              <span class="status status-confirmed py-2 px-4">Confirmed</span>
+            } @else {
+              <span class="status status-cancelled py-2 px-4">Cancelled</span>
+            }
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

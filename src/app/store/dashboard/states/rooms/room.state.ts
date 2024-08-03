@@ -40,7 +40,6 @@ export class RoomState {
 
   @Action(getRoomAction)
   getRoom(ctx: StateContext<RoomListModel>) {
-    console.log('getPictures dispatched');
     return this.roomService.getRooms().pipe(
       tap((result: any) => {
         ctx.patchState({

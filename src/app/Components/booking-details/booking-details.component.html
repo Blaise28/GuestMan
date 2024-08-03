@@ -1,0 +1,65 @@
+<h3>Tanents Details</h3>
+<div class="row mt-4">
+  <div
+    class="col-3 shadow-sm p-3 text-center m-2 border-top border-success-subtle border-5"
+    *ngIf="booking?.client"
+  >
+    <h4 class="mb-3 text-success-emphasis fw-light">Client Profile</h4>
+    <div class="img-fluid mx-auto">
+      <img [src]="booking.client?.photo" alt="" />
+    </div>
+    <p class="mt-3">{{ booking.client?.nom }} {{ booking.client?.prenom }}</p>
+    <div class="my-3">
+      <span class="bg-primary-subtle p-2 rounded">
+        {{ booking.client.telephone }}
+      </span>
+    </div>
+  </div>
+  <div
+    class="col-6 shadow-sm p-3 m-2 border-top border-success-subtle border-5"
+  >
+    @if (booking?.chambre) {
+      <h4 class="mb-3 text-success-emphasis fw-light">Room</h4>
+      <div class="row">
+        <div class="col-6">
+          <p>
+            <span class="fw-bold text-secondary">Room Number:</span> N0{{
+              booking.chambre.numero
+            }}
+          </p>
+          <p>
+            <span class="fw-bold text-secondary">Type:</span>
+            {{ booking.chambre.type }}
+          </p>
+          <p>
+            <span class="fw-bold text-secondary">Price per night:</span>
+            {{ booking.chambre.prix | number }} BIF
+          </p>
+        </div>
+      </div>
+    }
+  </div>
+  <div class="col-9 border p-3 my-2 ms-2 rounded">
+    <h4 class="mb-3 text-success-emphasis fw-light">Reservation Details</h4>
+    <div class="date mb-5">
+      <span class="fw-bold text-secondary me-4">Period :</span>
+      <span class="p-2 bg-info-subtle mx-2 rounded"
+        >{{ booking.date_arrivee | date: "mediumDate" }}
+      </span>
+      -
+      <span class="p-2 bg-info-subtle mx-2 rounded">{{
+        booking.date_depart | date: "mediumDate"
+      }}</span>
+      <span class="fs-5 fw-bold text-success">
+        {{ booking.nombre_nuits }}
+        <span class="text-secondary fw-light">Night(s)</span>
+      </span>
+    </div>
+    <div class="amount d-flex align-items-center">
+      <span class="fw-bold text-secondary me-4">Amount :</span>
+      <span class="fs-2 fw-light text-success"
+        >{{ booking.prix_total | number }} BIF</span
+      >
+    </div>
+  </div>
+</div>

@@ -1,0 +1,13 @@
+.img-fluid {
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
+  border-radius: 50%;
+  border: solid 2px #c4c4c4;
+}
+
+.img-fluid img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}

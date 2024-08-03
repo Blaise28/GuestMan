@@ -29,4 +29,11 @@ export class AuthService {
       }),
     );
   }
+  populate() {
+    return this.apiService.get('/user/').pipe(
+      map((data) => {
+        return data;
+      }),
+    );
+  }
 }
