@@ -1,0 +1,43 @@
+<div class="ticket p-3 shadow-sm" style="position: relative; width: 250px">
+  <div class="menu">
+    <i class="fa-solid fa-ellipsis"></i>
+  </div>
+  <p>
+    Bills: <span>#{{ ticketData.orderNumber }}</span>
+  </p>
+  <table class="table">
+    <tbody>
+      <tr class="">
+        <td>Order Time:</td>
+        <td class="text-end">
+          <span class="text-secondary">{{ ticketData.orderTime | date }}</span>
+        </td>
+      </tr>
+      <tr class="">
+        <td>Amount:</td>
+        <td class="text-end">
+          <span class="text-secondary">{{ ticketData.amount | currency }}</span>
+        </td>
+      </tr>
+      <tr class="">
+        <td>Payment:</td>
+        <td class="text-end">
+          <span class="text-secondary">{{ ticketData.payment }}</span>
+        </td>
+      </tr>
+      <tr class="">
+        <td>Table:</td>
+        <td class="text-end">
+          <span class="text-secondary">{{ ticketData.table }}</span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div
+    class="d-flex align-items-center justify-content-between dine p-1"
+    style="border: 1px solid #ebebeb"
+  >
+    <span>Dine-in</span>
+    <i class="fa-solid fa-umbrella-beach border rounded-circle"></i>
+  </div>
+</div>

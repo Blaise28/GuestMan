@@ -18,6 +18,8 @@ import { ForbidenComponent } from './Global/forbiden/forbiden.component';
 import { OperatorComponent } from './Components/operator/operator.component';
 import { OperatorDetailsComponent } from './Components/operator-details/operator-details.component';
 import { CounterComponent } from './Components/counter/counter.component';
+import { OrdersComponent } from './Components/orders/orders.component';
+import { ReportsComponent } from './Components/reports/reports.component';
 
 export const routes: Routes = [
   {
@@ -97,6 +99,18 @@ export const routes: Routes = [
         title: 'Counter',
         canActivate: [StaffGuard],
         component: CounterComponent,
+      },
+      {
+        path: 'orders',
+        title: 'Orders',
+        canActivate: [StaffGuard],
+        component: OrdersComponent,
+      },
+      {
+        path: 'reports',
+        title: 'Reports',
+        canActivate: [StaffGuard],
+        component: ReportsComponent,
       },
       {
         path: '404',
