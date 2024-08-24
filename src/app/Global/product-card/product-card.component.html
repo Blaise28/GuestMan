@@ -8,6 +8,9 @@
       class="rounded-circle"
       style="border: 10px solid rgba(194, 199, 248, 0.164)"
     />
+    @if (!item.picture) {
+      <i class="fa-solid fa-mountain-sun"></i>
+    }
   </div>
   <div class="card-body my-2">
     <p class="text-secondary m-0">{{ item.name }}</p>
