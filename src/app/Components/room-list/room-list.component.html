@@ -2,6 +2,20 @@
   <div class="my-3">
     <h1>{{ roomList.count }} <span>Room(s)</span></h1>
   </div>
+  <div class="d-flex my-5 py-4 bg-light">
+    <div class="me-3 d-flex align-items-center">
+      <div class="legend bg-primary me-2"></div>
+      <span>Order Hold</span>
+    </div>
+    <div class="me-3 d-flex align-items-center">
+      <div class="legend bg-success me-2"></div>
+      <span>Vacant</span>
+    </div>
+    <div class="me-3 d-flex align-items-center">
+      <div class="legend bg-danger me-2"></div>
+      <span>Occupied</span>
+    </div>
+  </div>
   <div class="list row">
     @for (item of roomList.results; track $index) {
       <div class="col-4">

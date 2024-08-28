@@ -1,6 +1,6 @@
 export const product = [
   {
-    picture: 'public/assets/image/nadya-filatova-frTrM7Gdkho-unsplash.jpg',
+    picture: 'nadya-filatova-frTrM7Gdkho-unsplash.jpg',
     name: 'Iced tea',
     price: 8000,
   },
