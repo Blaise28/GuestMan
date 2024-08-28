@@ -1,0 +1,16 @@
+.card-img {
+  object-fit: cover;
+  height: 100%;
+}
+
+.legend-vacant {
+  border-right: 5px solid #348f00;
+}
+
+.legend-hold {
+  border-right: 5px solid rgb(21, 113, 219);
+}
+
+.legend-occ {
+  border-right: 5px solid #b90404;
+}
