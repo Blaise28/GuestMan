@@ -4,11 +4,12 @@ import { Store } from '@ngxs/store';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { ClientState } from '../../store/dashboard/states/client/client.state';
 import { RouterModule } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-client',
   standalone: true,
-  imports: [RouterModule],
+  imports: [RouterModule, FormsModule, ReactiveFormsModule],
   templateUrl: './client.component.html',
   styleUrl: './client.component.scss',
 })
