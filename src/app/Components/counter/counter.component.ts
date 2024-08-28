@@ -39,19 +39,25 @@ export class CounterComponent implements OnInit {
     }, 6000);
   }
   addToCart(product: any) {
-    product['qty'] = 1;
-    this.cart.push(product);
+    if (product && !this.cart.includes(product)) {
+      product['qty'] = 1;
+      this.cart.push(product);
+    } else {
+      alert('Product already added to cart');
+    }
   }
   augmenterQuantite(produitId: string) {
     const produit = this.cart.find((p) => p.name === produitId);
-    if (produit) {
-      produit.qty++;
-    }
+    produit.qty++;
   }
   dimunuerQuantite(produitId: string) {
     const produit = this.cart.find((p) => p.name === produitId);
     if (produit) {
-      produit.qty--;
+      if (produit.qty < 1) {
+        this.cart.splice(produit, 1);
+      } else {
+        produit.qty--;
+      }
     }
   }
   onButtonClicked(valeur: string) {
