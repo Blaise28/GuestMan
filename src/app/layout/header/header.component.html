@@ -23,12 +23,13 @@
       >
         @if (user.is_staff) {
           <li>
-            <a
-              href="#"
-              class="nav-link px-2 link-body-emphasis"
-              routerLink="/l/counter"
-              >Counter</a
+            <button
+              class="px-4 py-2 btn btn-success"
+              data-bs-toggle="modal"
+              data-bs-target="#staticBackdrop"
             >
+              <i class="fa-solid fa-book me-2"></i>New Booking
+            </button>
           </li>
         }
       </ul>
@@ -59,9 +60,145 @@
           <strong> {{ user.username }} </strong>
         </a>
         <ul class="dropdown-menu text-small">
-          <li><a class="dropdown-item" href="#">Sign out</a></li>
+          <li><a class="dropdown-item" (click)="logout()">Sign out</a></li>
         </ul>
       </div>
     </div>
   </div>
 </header>
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="staticBackdrop"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">New Booking</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+          #closemodal
+        ></button>
+      </div>
+      <div class="modal-body p-4">
+        <!-- New booking form -->
+        <form [formGroup]="bookingForm">
+          <div class="row g-2">
+            <div class="col-md" style="position: relative">
+              @if (!selectedItems) {
+                <div class="form-floating mb-2">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="floatingInputGrid"
+                    placeholder="Search..."
+                    [formControl]="search"
+                    (input)="searchClients()"
+                  />
+                  <label for="floatingInputGrid">Client</label>
+                </div>
+              }
+              @if (items) {
+                <div class="shadow p-2 mb-2 z-3" style="position: absolute">
+                  <ul class="list-group list-group-flush">
+                    @for (client of items?.results; track $index) {
+                      <li
+                        class="list-group-item px-0 py-2"
+                        (click)="selectClient(client)"
+                      >
+                        <a class="link-body-emphasis text-decoration-none">
+                          {{ client.prenom }} {{ client.nom }}
+                        </a>
+                      </li>
+                    }
+                  </ul>
+                </div>
+              }
+              @if (selectedItems) {
+                <div
+                  class="shadow-sm p-2 d-flex align-items-center mb-2"
+                  style="position: relative"
+                >
+                  <p>
+                    <span class="fw-bold text-secondary">Client:</span>
+                    {{ selectedItems?.prenom }} {{ selectedItems?.nom }}
+                  </p>
+                  <span
+                    role="button"
+                    style="position: absolute; top: 16px; right: 10px"
+                    (click)="unselectClient()"
+                    ><i class="fa-solid fa-circle-xmark text-danger fs-5"></i
+                  ></span>
+                </div>
+              }
+            </div>
+            <div class="col-md">
+              <div class="form-floating mb-2">
+                <select
+                  class="form-select"
+                  id="floatingSelectGrid"
+                  formControlName="chambre"
+                >
+                  @for (room of rooms; track $index) {
+                    <option [ngValue]="room.id">
+                      Room N0{{ room.numero }}
+                    </option>
+                  }
+                </select>
+                <label for="floatingSelectGrid">Available Room</label>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-floating mb-2">
+                <input
+                  type="date"
+                  class="form-control"
+                  id="floatingInput"
+                  [min]="minDate"
+                  formControlName="date_arrivee"
+                  (change)="SendDataonChange($event)"
+                />
+                <label for="floatingInput">Date Arrivee</label>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-floating mb-2">
+                <input
+                  type="date"
+                  class="form-control"
+                  id="floatingInput"
+                  [min]="minDate2"
+                  formControlName="date_depart"
+                />
+                <label for="floatingInput">Date Depart</label>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancel
+        </button>
+        <button type="button" class="btn btn-primary" (click)="bookRoom()">
+          @if (isSubmiting) {
+            <span
+              class="spinner-border spinner-border-sm"
+              aria-hidden="true"
+            ></span>
+          } @else {
+            <span>Save</span>
+          }
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

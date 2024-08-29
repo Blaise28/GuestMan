@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Injectable } from '@angular/core';
-import { Action, Selector, State, StateContext } from '@ngxs/store';
+import { inject, Injectable } from '@angular/core';
+import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { tap } from 'rxjs';
 import { BookingService } from '../../../../Core/services';
 import { getBookingAction } from './booking.actions';
+import { getRoomAction } from '../rooms/room.actions';
 
 export interface BookingStateModel {
   id: number;
@@ -50,6 +51,7 @@ export interface ListModel {
 })
 @Injectable()
 export class BookingState {
+  private _store = inject(Store);
   constructor(private bookingService: BookingService) {}
   @Selector()
   static getBooking(state: any): any {
@@ -69,5 +71,6 @@ export class BookingState {
         return result;
       }),
     );
+    this._store.dispatch(new getRoomAction());
   }
 }

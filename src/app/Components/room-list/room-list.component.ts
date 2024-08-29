@@ -5,6 +5,7 @@ import { Observable, Subject, takeUntil } from 'rxjs';
 import { RoomState } from '../../store/dashboard/states/rooms/room.state';
 import { Store } from '@ngxs/store';
 import { RouterModule } from '@angular/router';
+import { getRoomAction } from '../../store/dashboard/states/rooms/room.actions';
 
 @Component({
   selector: 'app-room-list',
@@ -23,6 +24,7 @@ export class RoomListComponent {
   }
 
   ngOnInit(): void {
+    this._store.dispatch(new getRoomAction());
     this.roomList$.pipe(takeUntil(this.onDestroy$)).subscribe((data) => {
       this.roomList = data;
       console.log('Room list:', this.roomList.results);

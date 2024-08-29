@@ -31,4 +31,23 @@ export class BookingDetailsComponent {
       }
     });
   }
+
+  confirm() {
+    this._bookingService.confirm(this.bookingId).subscribe(() => {
+      console.log('Booking confirmed!');
+      this.ngOnInit();
+    });
+  }
+  reject() {
+    this._bookingService.reject(this.bookingId).subscribe(() => {
+      console.log('Booking rejected!');
+      this.ngOnInit();
+    });
+  }
+  book() {
+    this._bookingService.book(this.bookingId).subscribe(() => {
+      console.log('Booking reserved!');
+      this.ngOnInit();
+    });
+  }
 }

@@ -26,6 +26,8 @@ import { UserState } from './store/dashboard/states/user/user.state';
 import { ClientState } from './store/dashboard/states/client/client.state';
 import { ProductState } from './store/dashboard/states/product/product.state';
 import { OperatorState } from './store/dashboard/states/operator/operator.state';
+import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideToastr } from 'ngx-toastr';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -51,6 +53,8 @@ export const appConfig: ApplicationConfig = {
       withNgxsLoggerPlugin(),
     ),
     provideHttpClient(withInterceptors([tokenInterceptor])),
+    provideAnimations(), // required animations providers
+    provideToastr(), // Toastr providers
     Services.ApiService,
     Services.AuthService,
     Services.PictureService,

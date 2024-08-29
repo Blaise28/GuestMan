@@ -40,9 +40,12 @@
           <td>{{ item.client.nom }} {{ item.client.prenom }}</td>
           <td>{{ item.client.telephone }}</td>
           <td>N0{{ item.chambre.numero }}</td>
-          <td>{{ item.date_arrivee }}</td>
-          <td>{{ item.date_depart }}</td>
-          <td>{{ item.prix_total }}</td>
+          <td>{{ item.date_arrivee | date: "mediumDate" }}</td>
+          <td>
+            {{ item.date_depart | date: "mediumDate" }}
+            <span class="badge bg-text-success">{{ item.nombre_nuits }}</span>
+          </td>
+          <td>{{ item.prix_total | number }} BIF</td>
           <td>
             @if (item.status && item.status === "INITIAL") {
               <span class="status status-initial py-2 px-4">Initial</span>

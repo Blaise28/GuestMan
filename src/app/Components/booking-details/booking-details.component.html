@@ -11,7 +11,7 @@
     <p class="mt-3">{{ booking.client?.nom }} {{ booking.client?.prenom }}</p>
     <div class="my-3">
       <span class="bg-primary-subtle p-2 rounded">
-        {{ booking.client.telephone }}
+        {{ booking.client?.telephone }}
       </span>
     </div>
   </div>
@@ -24,16 +24,16 @@
         <div class="col-6">
           <p>
             <span class="fw-bold text-secondary">Room Number:</span> N0{{
-              booking.chambre.numero
+              booking?.chambre.numero
             }}
           </p>
           <p>
             <span class="fw-bold text-secondary">Type:</span>
-            {{ booking.chambre.type }}
+            {{ booking?.chambre.type }}
           </p>
           <p>
             <span class="fw-bold text-secondary">Price per night:</span>
-            {{ booking.chambre.prix | number }} BIF
+            {{ booking?.chambre.prix | number }} BIF
           </p>
         </div>
       </div>
@@ -44,22 +44,51 @@
     <div class="date mb-5">
       <span class="fw-bold text-secondary me-4">Period :</span>
       <span class="p-2 bg-info-subtle mx-2 rounded"
-        >{{ booking.date_arrivee | date: "mediumDate" }}
+        >{{ booking?.date_arrivee | date: "mediumDate" }}
       </span>
       -
       <span class="p-2 bg-info-subtle mx-2 rounded">{{
-        booking.date_depart | date: "mediumDate"
+        booking?.date_depart | date: "mediumDate"
       }}</span>
       <span class="fs-5 fw-bold text-success">
-        {{ booking.nombre_nuits }}
+        {{ booking?.nombre_nuits - 1 }}
         <span class="text-secondary fw-light">Night(s)</span>
       </span>
     </div>
     <div class="amount d-flex align-items-center">
       <span class="fw-bold text-secondary me-4">Amount :</span>
       <span class="fs-2 fw-light text-success"
-        >{{ booking.prix_total | number }} BIF</span
+        >{{ booking?.prix_total | number }} BIF</span
       >
     </div>
+    <div class="amount d-flex align-items-center float-end">
+      <span class="fw-bold text-secondary me-4">Status :</span>
+      @if (booking?.status && booking.status === "INITIAL") {
+        <span class="status status-initial py-2 px-4">Initial</span>
+      } @else if (booking?.status && booking.status === "RESERVED") {
+        <span class="status status-reserved py-2 px-4">reserved</span>
+      } @else if (booking?.status && booking.status === "CONFIRMED") {
+        <span class="status status-confirmed py-2 px-4">Confirmed</span>
+      } @else if (booking?.status && booking.status === "CANCELLED") {
+        <span class="status status-cancelled py-2 px-4">Cancelled</span>
+      }
+    </div>
   </div>
+  @if (booking?.status !== "CANCELLED") {
+    <div class="col-9 mt-2 row">
+      @if (booking?.status !== "CONFIRMED") {
+        <button class="btn btn-success col me-3 p-4" (click)="confirm()">
+          Confirm
+        </button>
+      }
+      @if (booking?.status !== "RESERVED") {
+        <button class="btn btn-primary col me-3 p-4" (click)="book()">
+          Book
+        </button>
+      }
+      <button class="btn btn-danger col me-3 p-4" (click)="reject()">
+        Reject
+      </button>
+    </div>
+  }
 </div>
