@@ -29,7 +29,7 @@
         <th>Contact</th>
         <th>Room</th>
         <th>Date Arrivee</th>
-        <th>Date Depart</th>
+        <th>Date Depart & Days</th>
         <th>Amount</th>
         <th>Status</th>
       </tr>
@@ -41,9 +41,11 @@
           <td>{{ item.client.telephone }}</td>
           <td>N0{{ item.chambre.numero }}</td>
           <td>{{ item.date_arrivee | date: "mediumDate" }}</td>
-          <td>
+          <td class="d-flex align-items-center">
             {{ item.date_depart | date: "mediumDate" }}
-            <span class="badge bg-text-success">{{ item.nombre_nuits }}</span>
+            <span class="badge text-bg-success ms-1">{{
+              item.nombre_nuits
+            }}</span>
           </td>
           <td>{{ item.prix_total | number }} BIF</td>
           <td>

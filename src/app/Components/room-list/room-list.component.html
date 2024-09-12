@@ -1,19 +1,34 @@
 <div>
   <div class="my-3">
-    <h1>{{ roomList.count }} <span>Room(s)</span></h1>
+    <h1 class="text-secondary">{{ roomList.count }} <span>Room(s)</span></h1>
   </div>
-  <div class="d-flex my-5 py-4 bg-light">
-    <div class="me-3 d-flex align-items-center">
-      <div class="legend bg-primary me-2"></div>
-      <span>Order Hold</span>
+  <div class="d-flex my-5 py-4 bg-light justify-content-between">
+    <div class="d-flex ms-4">
+      <div class="me-3 d-flex align-items-center">
+        <div class="legend bg-primary me-2"></div>
+        <span>Order Hold</span>
+      </div>
+      <div class="me-3 d-flex align-items-center">
+        <div class="legend bg-success me-2"></div>
+        <span>Vacant</span>
+      </div>
+      <div class="me-3 d-flex align-items-center">
+        <div class="legend bg-danger me-2"></div>
+        <span>Occupied</span>
+      </div>
     </div>
-    <div class="me-3 d-flex align-items-center">
-      <div class="legend bg-success me-2"></div>
-      <span>Vacant</span>
-    </div>
-    <div class="me-3 d-flex align-items-center">
-      <div class="legend bg-danger me-2"></div>
-      <span>Occupied</span>
+    <div class="me-4">
+      <div class="d-flex align-items-center">
+        <div class="border rounded bg-success-subtle">
+          <button
+            class="btn px-4 py-3 fw-bold"
+            data-bs-toggle="modal"
+            data-bs-target="#roomModal"
+          >
+            <i class="fa-solid fa-plus text-white me-1"></i> New Rooms
+          </button>
+        </div>
+      </div>
     </div>
   </div>
   <div class="list row">
@@ -25,5 +40,94 @@
         ></app-room-card>
       </div>
     }
+  </div>
+</div>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="roomModal"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">New Room</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+          #closemodal
+        ></button>
+      </div>
+      <div class="modal-body p-4">
+        <form
+          [formGroup]="roomForm"
+          (ngSubmit)="newRoom()"
+          enctype="multipart/form-data"
+        >
+          <div class="d-flex">
+            <div class="form-floating mb-3 me-2">
+              <input
+                type="number"
+                class="form-control"
+                id="floatingInput"
+                placeholder="name@example.com"
+                formControlName="numero"
+              />
+              <label for="floatingInput">Numero</label>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="form-floating mb-2">
+              <select
+                class="form-select"
+                id="floatingSelectGrid"
+                formControlName="type"
+                placeholder="Room Type"
+              >
+                @for (type of types; track $index) {
+                  <option [ngValue]="type">{{ type }}</option>
+                }
+              </select>
+              <label for="floatingSelectGrid">Type</label>
+            </div>
+          </div>
+          <div class="d-flex">
+            <div class="form-floating mb-3 me-2">
+              <input
+                type="number"
+                class="form-control"
+                id="floatingInput"
+                placeholder="0000"
+                formControlName="prix"
+              />
+              <label for="floatingInput">Prix</label>
+            </div>
+          </div>
+          <div class="border-top text-center mb-t">
+            <button
+              type="submit"
+              class="btn btn-success my-3 px-4"
+              [disabled]="isSubmiting && roomForm.invalid"
+            >
+              @if (isSubmiting) {
+                <span
+                  class="spinner-border spinner-border-sm"
+                  aria-hidden="true"
+                ></span>
+              } @else {
+                <span>Register</span>
+              }
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </div>

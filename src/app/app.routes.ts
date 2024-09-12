@@ -20,6 +20,8 @@ import { OperatorDetailsComponent } from './Components/operator-details/operator
 import { CounterComponent } from './Components/counter/counter.component';
 import { OrdersComponent } from './Components/orders/orders.component';
 import { ReportsComponent } from './Components/reports/reports.component';
+import { BarComponent } from './Components/admin/bar/bar.component';
+import { FoodComponent } from './Components/admin/food/food.component';
 
 export const routes: Routes = [
   {
@@ -93,6 +95,20 @@ export const routes: Routes = [
         title: 'Admin',
         canActivate: [StaffGuard],
         component: AdminComponent,
+        children: [
+          {
+            path: '',
+            component: BarComponent,
+          },
+          {
+            path: 'bar',
+            component: BarComponent,
+          },
+          {
+            path: 'food',
+            component: FoodComponent,
+          },
+        ],
       },
       {
         path: 'counter',

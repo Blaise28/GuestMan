@@ -1,0 +1,191 @@
+<div class="row">
+  <div class="col-8" [ngClass]="{ 'col-12': !productArticle }">
+    <div class="py-2 border-bottom">
+      <div class="input-group mb-3">
+        <input
+          type="text"
+          class="form-control me-2"
+          placeholder="Search Product"
+          aria-label="Recipient's username"
+          aria-describedby="button-addon2"
+        />
+        <button
+          class="btn btn-primary"
+          data-bs-toggle="modal"
+          data-bs-target="#barModal"
+        >
+          New Product
+        </button>
+      </div>
+    </div>
+    <div class="my-3 d-flex flex-wrap">
+      @if (productList.length > 0) {
+        @for (item of productList; track $index) {
+          <div
+            class="card m-2"
+            style="width: 200px"
+            (click)="selectProduct(item)"
+          >
+            <div class="card-img d-flex justify-content-center">
+              @if (item.photo) {
+                <img class="rounded img-fluid" [src]="item.photo" alt="" />
+              } @else {
+                <img
+                  class="rounded"
+                  src="./assets/image/placeholder.jpg"
+                  alt=""
+                  width="200px"
+                  height="200px"
+                />
+              }
+            </div>
+            <div class="body my-3 mx-1">
+              <p class="text-secondary mb-1">{{ item.nom }}</p>
+              <p class="m-0 d-flex justify-content-between">
+                <small>{{ item.prix_unitaire | number }} BIF</small>
+                <small class="text-success fw-bold">{{ item.stock }}</small>
+              </p>
+            </div>
+          </div>
+        }
+      } @else {
+        <p class="text-secondary">No Product</p>
+      }
+    </div>
+  </div>
+  @if (productArticle) {
+    <div class="col-4">
+      <div class="py-2 border-bottom">
+        <div class="input-group mb-3 bg-ligh">
+          <h4 class="text-secondary">Product Details</h4>
+        </div>
+      </div>
+      <div class="img">
+        <img [src]="productArticle.photo" alt="" class="img-fluid" />
+      </div>
+      <div class="body">
+        <h1>{{ productArticle.nom }}</h1>
+        <p class="mb-3">
+          Prix unitaire : {{ productArticle.prix_unitaire | number }} BIF
+        </p>
+        <p class="mb-3">Stock : {{ productArticle.stock }}</p>
+        <button class="btn btn-danger" (click)="delete()">Delete</button>
+      </div>
+    </div>
+  }
+</div>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="barModal"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">New Beverage</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+          #closemodal
+        ></button>
+      </div>
+      <div class="modal-body p-4">
+        <form [formGroup]="productForm">
+          <div class="d-flex">
+            <div class="form-floating mb-3 me-2">
+              <input
+                type="text"
+                class="form-control"
+                id="floatingInput"
+                placeholder="name@example.com"
+                formControlName="nom"
+              />
+              <label for="floatingInput">Nom</label>
+            </div>
+            <div class="form-floating">
+              <select
+                class="form-select"
+                id="floatingSelect"
+                aria-label="Floating label select example"
+                formControlName="category"
+              >
+                @for (item of category.allCategory; track $index) {
+                  <option [ngValue]="item.id">{{ item.nom }}</option>
+                }
+              </select>
+              <label for="floatingSelect">Category</label>
+            </div>
+          </div>
+          <div class="d-flex">
+            <div class="form-floating mb-3 me-2">
+              <input
+                type="number"
+                class="form-control"
+                id="floatingInput"
+                placeholder="name@example.com"
+                formControlName="prix_unitaire"
+              />
+              <label for="floatingInput">prix</label>
+            </div>
+            <div class="form-floating mb-3 me-2">
+              <input
+                type="number"
+                class="form-control"
+                id="floatingInput"
+                placeholder="name@example.com"
+                formControlName="stock"
+              />
+              <label for="floatingInput">Stock</label>
+            </div>
+          </div>
+          <div class="form-floating mb-3 me-2">
+            <input
+              type="file"
+              class="form-control"
+              id="floatingInput"
+              placeholder="name@example.com"
+              (change)="uploadProfileImage($event)"
+            />
+            <label for="floatingInput">Picture</label>
+          </div>
+          @if (image) {
+            <div class="card-img mx-auto">
+              <img
+                class="mt-2"
+                [src]="image"
+                alt="product"
+                style="object-fit: cover; height: 100%"
+              />
+            </div>
+          }
+
+          <div class="border-top text-center mb-t">
+            <button
+              type="submit"
+              class="btn btn-success my-3 px-4"
+              [disabled]="isSubmiting"
+              (click)="newBeverage()"
+            >
+              @if (isSubmiting) {
+                <span
+                  class="spinner-border spinner-border-sm"
+                  aria-hidden="true"
+                ></span>
+              } @else {
+                <span>Register</span>
+              }
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

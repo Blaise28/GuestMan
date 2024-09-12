@@ -1,0 +1,27 @@
+$black: #000000;
+
+.card {
+  border: none;
+  transition: all 0.3s ease-in-out;
+}
+
+.card:hover {
+  box-shadow: 0 .5rem 1rem rgba($black, .15);
+  ;
+}
+
+.img-fluid {
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+}
+
+.card-img {
+  width: 200px;
+  height: 200px;
+}
+
+.img {
+  width: 500px;
+  height: 500px;
+}

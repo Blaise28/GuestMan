@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable } from '@angular/core';
 // import { Observable, of as ObservableOf } from 'rxjs';
 import { Observable } from 'rxjs';
@@ -20,6 +21,13 @@ export class RoomService {
   }
   getRoom(id: number): Observable<unknown> {
     return this.apiService.get(`/rooms/${id}/`).pipe(
+      map((data) => {
+        return data;
+      }),
+    );
+  }
+  newRoom(data: any) {
+    return this.apiService.post('/rooms/', data).pipe(
       map((data) => {
         return data;
       }),

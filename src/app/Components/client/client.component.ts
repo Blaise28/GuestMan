@@ -34,6 +34,7 @@ export class ClientComponent implements OnInit {
   image!: any;
   client$!: Observable<any>;
   client!: any;
+
   constructor(
     private fb: FormBuilder,
     private toastr: ToastrService,

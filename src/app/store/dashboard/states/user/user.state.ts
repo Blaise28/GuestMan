@@ -32,7 +32,10 @@ export class UserState {
   static getUser(state: UserStateModel): UserStateModel {
     return state;
   }
-
+  @Selector()
+  static getUserId(state: UserStateModel): any {
+    return state.id;
+  }
   @Action(SetUser)
   setUser(ctx: StateContext<UserStateModel>, { payload }: SetUser) {
     ctx.setState(payload);

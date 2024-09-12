@@ -25,7 +25,9 @@ export class ApiService {
   }
   post(path: string, body: object = {}): Observable<unknown> {
     return this.http
-      .post(`${environment.apiUrl}${path}`, JSON.stringify(body))
+      .post(`${environment.apiUrl}${path}`, JSON.stringify(body), {
+        reportProgress: true,
+      })
       .pipe(catchError(this.formatErrors));
   }
   put(path: string, body: object = {}): Observable<unknown> {

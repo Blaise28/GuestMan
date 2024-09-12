@@ -1,1 +1,15 @@
-<p>admin works!</p>
+<div>
+  <span
+    class="mx-3 btn p-3 rounded"
+    routerLink="bar"
+    routerLinkActive="btn-primary"
+    [routerLinkActiveOptions]="{ exact: true }"
+    >Bar</span
+  ><span
+    class="mx-3 p-3 rounded btn"
+    routerLink="food"
+    routerLinkActive="btn-primary"
+    >Food</span
+  >
+</div>
+<div class="mt-4 p-3"><router-outlet></router-outlet></div>

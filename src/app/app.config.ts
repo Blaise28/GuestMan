@@ -28,6 +28,8 @@ import { ProductState } from './store/dashboard/states/product/product.state';
 import { OperatorState } from './store/dashboard/states/operator/operator.state';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideToastr } from 'ngx-toastr';
+import { CategoryState } from './store/dashboard/states/category/category.state';
+import { TypeState } from './store/dashboard/states/type/type.state';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -46,6 +48,8 @@ export const appConfig: ApplicationConfig = {
         ClientState,
         ProductState,
         OperatorState,
+        CategoryState,
+        TypeState,
       ],
       // withNgxsStoragePlugin({
       //   keys: ['auth.token.access'],
