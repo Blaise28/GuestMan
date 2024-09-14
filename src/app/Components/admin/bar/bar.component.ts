@@ -55,7 +55,6 @@ export class BarComponent implements OnInit {
     this._store.dispatch(new getProductAction());
     this.productList$.pipe(takeUntil(this.onDestroy$)).subscribe((data) => {
       this.productList = data.allProduct;
-      console.log(this.productList);
     });
     this.category$.pipe(takeUntil(this.onDestroy$)).subscribe((data) => {
       this.category = data;

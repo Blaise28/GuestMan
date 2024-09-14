@@ -61,7 +61,6 @@ export class LoginComponent implements OnInit {
     if (this.authForm.valid) {
       this._auth.login(this.authForm.value).subscribe({
         next: (data: any) => {
-          console.log(data);
           localStorage.setItem('accessToken', data.access);
           localStorage.setItem('refreshToken', data.refresh);
           this._snackBar.open('Logged In Successfully!', 'Dismiss', {

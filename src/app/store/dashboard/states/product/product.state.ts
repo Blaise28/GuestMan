@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { tap } from 'rxjs';
 import { ProductService } from '../../../../Core/services';
-import { getFoodAction, getProductAction } from './product.actions';
+import { getProductAction } from './product.actions';
 
 export interface ProductStateModel {
   id: number;
@@ -19,12 +19,6 @@ export interface productModel {
   previous: unknown;
   allProduct: ProductStateModel[];
 }
-export interface foodModel {
-  count: number;
-  next: unknown;
-  previous: unknown;
-  allFoods: ProductStateModel[];
-}
 
 @State<productModel>({
   name: 'productList',
@@ -35,25 +29,11 @@ export interface foodModel {
     allProduct: [],
   },
 })
-@State<foodModel>({
-  name: 'foodList',
-  defaults: {
-    count: 0,
-    next: null,
-    previous: null,
-    allFoods: [],
-  },
-})
 @Injectable()
 export class ProductState {
   constructor(private productService: ProductService) {}
   @Selector()
   static getProduct(state: any): any {
-    return state;
-  }
-
-  @Selector()
-  static getFood(state: any): any {
     return state;
   }
 
@@ -66,21 +46,6 @@ export class ProductState {
           next: result.next,
           previous: result.previous,
           allProduct: result.results,
-        });
-        return result;
-      }),
-    );
-  }
-
-  @Action(getFoodAction)
-  getFood(ctx: StateContext<foodModel>) {
-    return this.productService.getFoods().pipe(
-      tap((result: any) => {
-        ctx.patchState({
-          count: result.count,
-          next: result.next,
-          previous: result.previous,
-          allFoods: result.results,
         });
         return result;
       }),

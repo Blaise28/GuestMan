@@ -1,22 +1,37 @@
 <div class="rounded shadow-sm p-2" style="width: 200px">
   <div class="card-img text-center">
-    <img
-      src="assets/image/nadya-filatova-frTrM7Gdkho-unsplash.jpg"
-      alt=""
-      width="170"
-      height="170"
-      class="rounded-circle"
-      style="border: 10px solid rgba(194, 199, 248, 0.164)"
-    />
-    @if (!item.picture) {
-      <i class="fa-solid fa-mountain-sun"></i>
+    @if (!item.photo) {
+      <div style="width: 100%; height: 100%">
+        <i class="fa-solid fa-mountain-sun fs-1 text-warning"></i>
+      </div>
+    } @else {
+      <img [src]="item.photo" style="object-fit: cover; height: 100%" />
     }
   </div>
   <div class="card-body my-2">
-    <p class="text-secondary m-0">{{ item.name }}</p>
+    @if (item.nom) {
+      <p class="text-secondary m-0">{{ item.nom }}</p>
+    } @else {
+      <p class="text-secondary m-0">{{ item.name }}</p>
+    }
+  </div>
+  <div class="row">
+    @if (item.description) {
+      <p
+        class="text-secondary m-0 col-12 text-truncate"
+        [title]="item.description"
+      >
+        {{ item.description }}
+      </p>
+    }
   </div>
   <div class="d-flex align-items-center justify-content-between">
-    <p class="mb-0 text-success">Rp BIF{{ item.price }}</p>
+    @if (item.prix_unitaire) {
+      <p class="mb-0 text-success">BIF {{ item.prix_unitaire | number }}</p>
+    } @else {
+      <p class="mb-0 text-success">BIF {{ item.prix_repas | number }}</p>
+    }
+
     <button class="btn btn-primary" (click)="add()">+</button>
   </div>
 </div>

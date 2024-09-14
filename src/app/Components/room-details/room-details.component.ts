@@ -63,7 +63,6 @@ export class RoomDetailsComponent implements OnInit {
         .pipe(takeUntil(this.onDestroy$))
         .subscribe((data) => {
           this.pictures = data;
-          console.log('Pictures:', this.pictures);
         });
     }
   }

@@ -21,7 +21,7 @@ import { CounterComponent } from './Components/counter/counter.component';
 import { OrdersComponent } from './Components/orders/orders.component';
 import { ReportsComponent } from './Components/reports/reports.component';
 import { BarComponent } from './Components/admin/bar/bar.component';
-import { FoodComponent } from './Components/admin/food/food.component';
+import { OrderDetailsComponent } from './Components/order-details/order-details.component';
 
 export const routes: Routes = [
   {
@@ -104,10 +104,6 @@ export const routes: Routes = [
             path: 'bar',
             component: BarComponent,
           },
-          {
-            path: 'food',
-            component: FoodComponent,
-          },
         ],
       },
       {
@@ -121,6 +117,12 @@ export const routes: Routes = [
         title: 'Orders',
         canActivate: [StaffGuard],
         component: OrdersComponent,
+      },
+      {
+        path: 'orders/details/:code',
+        title: 'Orders Details',
+        canActivate: [StaffGuard],
+        component: OrderDetailsComponent,
       },
       {
         path: 'reports',

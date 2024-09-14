@@ -29,7 +29,7 @@ import { OperatorState } from './store/dashboard/states/operator/operator.state'
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideToastr } from 'ngx-toastr';
 import { CategoryState } from './store/dashboard/states/category/category.state';
-import { TypeState } from './store/dashboard/states/type/type.state';
+import { OrderState } from './store/dashboard/states/orders/order.state';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -49,7 +49,7 @@ export const appConfig: ApplicationConfig = {
         ProductState,
         OperatorState,
         CategoryState,
-        TypeState,
+        OrderState,
       ],
       // withNgxsStoragePlugin({
       //   keys: ['auth.token.access'],

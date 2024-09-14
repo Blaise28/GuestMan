@@ -1,0 +1,185 @@
+<h5 class="modal-title" id="staticBackdropLabel">
+  <div class="d-flex flex-wrap fs-6 mb-3 align-item-center">
+    Order# <span class="text-secondary fw-light me-4">{{ bill?.code }}</span>
+    @if (bill?.status === "PAYEMENT_STATUS_PENDING") {
+      <span class="py-2 badge rounded-pill bg-badge-warning px-5">{{
+        bill?.status !== "PAYEMENT_STATUS_PENDING" ? "Paid" : "Peding"
+      }}</span>
+    } @else {
+      <span class="py-2 badge rounded-pill bg-badge-success px-5">{{
+        bill?.status !== "PAYEMENT_STATUS_PENDING" ? "Paid" : "Peding"
+      }}</span>
+    }
+  </div>
+</h5>
+<div class="modal-body row">
+  <div class="col-6 cart bg-success-subtle rounded-3 py-3">
+    <div class="cart-details">
+      <div class="d-flex flex-column" style="height: 100%">
+        <table class="table m-0">
+          <thead class="mb-3 rounded-3">
+            <tr>
+              <th class="text-primary-emphasis fw-light">Product Name</th>
+              <th class="text-primary-emphasis fw-light">Quantity</th>
+              <th class="text-primary-emphasis fw-light">Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            @if (bill?.items.length < 1) {
+              <div
+                class="d-flex align-items-center justify-content-center mt-3"
+              >
+                <i class="fa-solid fa-tags text-secondary fs-5"></i>
+                <span class="fs-7 text-secondary">Cart Empty</span>
+              </div>
+            }
+            @for (item of bill?.items; track $index) {
+              <tr>
+                <td class="d-flex align-items-center">
+                  <img
+                    [src]="item.product.photo"
+                    alt=""
+                    width="40"
+                    height="40"
+                    class="rounded-circle me-2"
+                  />
+                  <div class="d-flex flex-column text-secondary">
+                    <span class="fs-7"> {{ item.product.name }} </span>
+                    <span class="fs-7"
+                      ><span class="text-success">
+                        {{ item.product.prix_unitaire | number }} </span
+                      >BIF</span
+                    >
+                  </div>
+                </td>
+                <td class="my-auto">
+                  <div>
+                    <span class="mx-3 text-secondary">
+                      {{ item.quantite }}
+                    </span>
+                  </div>
+                </td>
+                <td class="my-auto">
+                  <div>
+                    <span class="fs-7 text-secondary"
+                      >BIF {{ item.prix_total | number }}</span
+                    >
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+        <div class="border-top border-primary-subtle mt-5">
+          <div class="mt-3 d-flex justify-content-between">
+            <td>SubTotal</td>
+            <td class="text-end text-success">
+              BIF {{ bill?.amount_total | number }}
+            </td>
+          </div>
+          <div class="mt-3 d-flex justify-content-between">
+            <td>Discount</td>
+            <td class="text-end text-success">Rp 0</td>
+          </div>
+          <div class="mt-3 d-flex justify-content-between">
+            <td>Total</td>
+            <td class="text-end text-success">
+              BIF {{ bill?.amount_total | number }}
+            </td>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-6">
+    <div>
+      <h5>Payment method</h5>
+      <div class="d-flex align-items-center text-dark">
+        <span class="bg-primary p-3 rounded me-2 text-light" role="button"
+          >Cash</span
+        >
+        <span class="bg-light p-3 rounded me-2" role="button">Card</span>
+        <span class="bg-light p-3 rounded me-2" role="button"
+          >Mobile Money</span
+        >
+      </div>
+      <div class="my-3">
+        <div class="amount border rounded p-4 text-end mb-2">
+          <span> {{ montant | number }} BIF</span>
+        </div>
+        <div class="numpad row">
+          <app-button
+            (clicked)="onButtonClicked('1')"
+            [valeur]="'1'"
+            class="col-4"
+          ></app-button>
+          <app-button
+            (clicked)="onButtonClicked('2')"
+            [valeur]="'2'"
+            class="col-4"
+          ></app-button>
+          <app-button
+            (clicked)="onButtonClicked('3')"
+            [valeur]="'3'"
+            class="col-4"
+          ></app-button>
+          <app-button
+            (clicked)="onButtonClicked('4')"
+            [valeur]="'4'"
+            class="col-4"
+          ></app-button>
+          <app-button
+            (clicked)="onButtonClicked('5')"
+            [valeur]="'5'"
+            class="col-4"
+          ></app-button>
+          <app-button
+            (clicked)="onButtonClicked('6')"
+            [valeur]="'6'"
+            class="col-4"
+          ></app-button>
+          <app-button
+            (clicked)="onButtonClicked('7')"
+            [valeur]="'7'"
+            class="col-4"
+          ></app-button>
+          <app-button
+            (clicked)="onButtonClicked('8')"
+            [valeur]="'8'"
+            class="col-4"
+          ></app-button>
+          <app-button
+            (clicked)="onButtonClicked('9')"
+            [valeur]="'9'"
+            class="col-4"
+          ></app-button>
+          <app-button
+            (clicked)="onButtonClicked('0')"
+            [valeur]="'0'"
+            class="col-4"
+          ></app-button>
+          <app-button
+            (clicked)="onButtonClicked('C')"
+            [valeur]="'C'"
+            class="col-4"
+          ></app-button>
+          <app-button
+            (clicked)="onButtonClicked('X')"
+            [valeur]="'X'"
+            class="col-4"
+          ></app-button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button
+    type="button"
+    class="btn btn-success"
+    [disabled]="!montant"
+    (click)="confirmPayment()"
+  >
+    Confirm Payment
+  </button>
+</div>

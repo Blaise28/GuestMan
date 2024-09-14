@@ -46,7 +46,6 @@ export class PictureState {
 
   @Action(getPictureAction)
   getPictures(ctx: StateContext<PictureListModel>) {
-    console.log('getPictures dispatched');
     return this.pictureService.getPictures().pipe(
       tap((result: any) => {
         ctx.patchState({

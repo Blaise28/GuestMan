@@ -80,7 +80,6 @@ export class HeaderComponent implements OnInit {
         }),
       )
       .subscribe((data) => {
-        console.log(data);
         this.rooms = data;
       });
   }
@@ -89,11 +88,10 @@ export class HeaderComponent implements OnInit {
     if (this.search.value) {
       this._client.autocomplete(this.search.value).subscribe({
         next: (res) => {
-          console.log(res);
           this.items = res;
         },
-        error: (error) => {
-          console.error(error);
+        error: () => {
+          //
         },
       });
     }
@@ -119,9 +117,8 @@ export class HeaderComponent implements OnInit {
           this.bookingForm.reset();
           this.selectedItems = null;
         },
-        error: (error) => {
+        error: () => {
           this.isSubmiting = false;
-          console.error(error);
           this.toastr.error('Operation Failed', 'Error!!');
         },
       });
@@ -130,7 +127,6 @@ export class HeaderComponent implements OnInit {
   selectClient(event: any) {
     this.selectedItems = event;
     this.items = null;
-    console.log(this.selectedItems);
   }
   unselectClient() {
     this.selectedItems = null;

@@ -6,3 +6,4 @@ export * from './booking.service';
 export * from './client.service';
 export * from './product.service';
 export * from './operator.service';
+export * from './bill.service';

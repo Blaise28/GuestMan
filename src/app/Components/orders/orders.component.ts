@@ -1,41 +1,45 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Store } from '@ngxs/store';
+import { Component, OnInit } from '@angular/core';
 import { TicketComponent } from '../../Global/ticket/ticket.component';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import {
   FormControl,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { JsonPipe } from '@angular/common';
-import { provideNativeDateAdapter } from '@angular/material/core';
+import { Observable, Subject, takeUntil } from 'rxjs';
+import { OrderState } from '../../store/dashboard/states/orders/order.state';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-orders',
   standalone: true,
   imports: [
     TicketComponent,
-    MatFormFieldModule,
-    MatDatepickerModule,
     FormsModule,
     ReactiveFormsModule,
-    JsonPipe,
+    CommonModule,
+    RouterModule,
   ],
-  providers: [provideNativeDateAdapter()],
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class OrdersComponent {
-  ticketInfo = {
-    orderNumber: 'D234123',
-    orderTime: new Date('2024-04-27 20:00'),
-    amount: 50.99,
-    payment: 'cash',
-    table: 'T-5',
-  };
+export class OrdersComponent implements OnInit {
+  bills$!: Observable<any>;
+  bills!: any;
+  protected onDestroy$: Subject<void> = new Subject<void>();
 
+  constructor(private _store: Store) {
+    this.bills$ = this._store.select(OrderState.getOrder);
+  }
+
+  ngOnInit(): void {
+    this.bills$.pipe(takeUntil(this.onDestroy$)).subscribe((data) => {
+      this.bills = data.results;
+    });
+  }
   readonly range = new FormGroup({
     start: new FormControl<Date | null>(null),
     end: new FormControl<Date | null>(null),

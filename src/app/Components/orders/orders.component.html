@@ -30,4 +30,13 @@
     </div>
   </div>
 </div>
-<app-ticket [ticketData]="ticketInfo"></app-ticket>
+<div class="content d-flex flex-wrap">
+  @if (bills) {
+    @for (item of bills; track $index) {
+      <div class="bill m-3" routerLink="details/{{ item.code }}">
+        <app-ticket [ticketData]="item"></app-ticket>
+      </div>
+    }
+    <br />
+  }
+</div>

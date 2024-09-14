@@ -9,12 +9,9 @@ import { setToken } from './store/auth/auth.actions';
 import { getBookingAction } from './store/dashboard/states/booking/booking.actions';
 import { Populate } from './store/dashboard/states/user/user.actions';
 import { getClientAction } from './store/dashboard/states/client/client.actions';
-import {
-  getFoodAction,
-  getProductAction,
-} from './store/dashboard/states/product/product.actions';
+import { getProductAction } from './store/dashboard/states/product/product.actions';
 import { getCategoryAction } from './store/dashboard/states/category/category.actions';
-import { getTypeAction } from './store/dashboard/states/type/type.actions';
+import { getOrderAction } from './store/dashboard/states/orders/order.action';
 
 @Component({
   selector: 'app-root',
@@ -40,9 +37,8 @@ export class AppComponent {
       this._store.dispatch(new getClientAction());
       this._store.dispatch(new getProductAction());
       this._store.dispatch(new Populate());
-      this._store.dispatch(new getFoodAction());
       this._store.dispatch(new getCategoryAction());
-      this._store.dispatch(new getTypeAction());
+      this._store.dispatch(new getOrderAction());
     } else {
       //
     }

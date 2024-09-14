@@ -9,9 +9,11 @@
           type="text"
           class="form-control"
           id="floatingInput"
-          placeholder="name@example.com"
+          placeholder="Search product"
+          [formControl]="search"
+          (input)="searchProduct()"
         />
-        <label for="floatingInput">Search</label>
+        <label for="floatingInput">Search Product</label>
       </div>
     </form>
   </div>
@@ -22,16 +24,28 @@
     <header class="services">
       <h5 class="mb-3">Products#</h5>
       <div class="d-flex align-items-center flex-wrap">
-        <div class="p-3 rounded shadow-sm me-3 btn">
-          <i class="fa-solid fa-beer-mug-empty me-2"></i>Bar
+        <div
+          class="p-3 rounded shadow-sm me-3 btn"
+          [ngClass]="{ 'bg-primary text-light': !selectedCategory }"
+          (click)="selectCategory('')"
+        >
+          <i class="fa-solid fa-beer-mug-empty me-2"></i> All
         </div>
-        <div class="p-3 rounded shadow-sm me-3 bg-primary text-light btn">
-          <i class="fa-solid fa-utensils me-2"></i>Food
-        </div>
+        @for (item of category; track $index) {
+          <div
+            class="p-3 rounded shadow-sm me-3 btn"
+            [ngClass]="{
+              'bg-primary text-light': item.id === selectedCategory,
+            }"
+            (click)="selectCategory(item.id)"
+          >
+            <i class="fa-solid fa-beer-mug-empty me-2"></i> {{ item.nom }}
+          </div>
+        }
       </div>
     </header>
-    <div class="items-content mt-4 d-flex flex-wrap">
-      @for (item of product; track $index) {
+    <div class="items-content mt-4 d-flex flex-wrap" id="bar">
+      @for (item of productList; track $index) {
         <app-product-card
           class="me-3 mb-3"
           [item]="item"
@@ -112,16 +126,20 @@
             <label for="floatingSelectGrid" class="text-secondary">Table</label>
           </div>
         } @else if (residentValue === "resident") {
-          <div class="form-floating mb-3">
-            <input
-              type="email"
-              class="form-control"
-              id="floatingInput"
-              placeholder="name@example.com"
-            />
-            <label for="floatingInput" class="text-secondary"
-              >Search Resident</label
+          <div class="form-floating">
+            <select
+              class="form-select"
+              id="floatingSelect"
+              aria-label="Floating label select example"
+              [formControl]="reservationId"
             >
+              @for (item of bookingList; track $index) {
+                <option [value]="item.id">
+                  {{ item.client.nom }} {{ item.client.prenom }}
+                </option>
+              }
+            </select>
+            <label for="floatingSelect">Search Resident</label>
           </div>
         }
       </form>
@@ -145,40 +163,68 @@
             <tr>
               <td class="d-flex align-items-center">
                 <img
-                  src="item.picture"
+                  [src]="item.photo"
                   alt=""
                   width="40"
                   height="40"
                   class="rounded-circle me-2"
                 />
                 <div class="d-flex flex-column text-secondary">
-                  <span class="fs-7"> {{ item.name }} </span>
-                  <span class="fs-7"
-                    ><span class="text-success"> {{ item.price }} </span
-                    >BIF</span
-                  >
+                  @if (item.nom) {
+                    <span class="fs-7"> {{ item.nom }} </span>
+                  } @else {
+                    <span class="fs-7"> {{ item.name }} </span>
+                  }
+
+                  <span class="fs-7">
+                    @if (item.prix_unitaire) {
+                      <span class="text-success"
+                        >{{ item.prix_unitaire | number }} BIF</span
+                      >
+                    } @else {
+                      <span class="text-success"
+                        >{{ item.prix_repas | number }} BIF</span
+                      >
+                    }
+                  </span>
                 </div>
               </td>
               <td class="my-auto">
                 <div>
+                  @if (item?.quantity > 1) {
+                    <button
+                      class="bg-primary increment rounded-circle text-white"
+                      (click)="dimunuerQuantite(item.id)"
+                    >
+                      -
+                    </button>
+                  } @else {
+                    <button
+                      class="bg-danger increment rounded-circle text-white"
+                      (click)="dropProduct(item.id)"
+                    >
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
+                  }
+
+                  <span class="mx-3 text-secondary"> {{ item.quantity }} </span>
                   <button
-                    class="bg-primary increment rounded text-white"
-                    (click)="dimunuerQuantite(item.name)"
-                  >
-                    -
-                  </button>
-                  <span class="mx-3 text-secondary"> {{ item.qty }} </span>
-                  <button
-                    class="bg-primary increment rounded text-white"
-                    (click)="augmenterQuantite(item.name)"
+                    class="bg-primary increment rounded-circle text-white"
+                    (click)="augmenterQuantite(item.id)"
                   >
                     +
                   </button>
                 </div>
                 <div>
-                  <span class="fs-7 text-secondary"
-                    >Rp : {{ item.price * item.qty }}</span
-                  >
+                  @if (item.prix_unitaire) {
+                    <span class="fs-7 text-secondary"
+                      >Rp : {{ item.prix_unitaire * item.quantity }}</span
+                    >
+                  } @else {
+                    <span class="fs-7 text-secondary"
+                      >Rp : {{ item.prix_repas * item.quantity }}</span
+                    >
+                  }
                 </div>
               </td>
             </tr>
@@ -204,214 +250,45 @@
           </tbody>
         </table>
       </div>
-      <button
-        class="border-0 w-100 p-2 rounded btn btn-primary"
-        data-bs-toggle="modal"
-        data-bs-target="#staticBackdrop"
-        [disabled]="cart.length < 1"
-      >
-        Order
-      </button>
+      @if (residentValue && reservationId) {
+        <div class="d-flex align-items-center justify-content-center mt-3">
+          <button
+            class="border-0 w-100 p-2 rounded btn btn-primary"
+            [disabled]="cart.length < 1"
+            (click)="submitBill()"
+          >
+            Hold Order
+          </button>
+        </div>
+      } @else if (reservationId == null) {
+        <button
+          class="border-0 w-100 p-2 rounded btn btn-primary"
+          data-bs-toggle="modal"
+          data-bs-target="#bill"
+          [disabled]="cart.length < 1"
+          (click)="submitBill()"
+        >
+          Order
+        </button>
+      }
     </div>
   </section>
 </div>
+
 <!-- Modal -->
 <div
   class="modal fade"
-  id="staticBackdrop"
-  data-bs-backdrop="static"
-  data-bs-keyboard="false"
+  id="bill"
   tabindex="-1"
-  aria-labelledby="staticBackdropLabel"
+  aria-labelledby="exampleModalLabel"
   aria-hidden="true"
 >
-  <div class="modal-dialog modal-dialog-centered modal-xl">
+  <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">Order# DI156</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="modal-body row">
-        <div class="col-6 cart">
-          <div class="cart-details">
-            <div>
-              <table class="table m-0">
-                <thead class="mb-3">
-                  <tr>
-                    <th class="text-primary fw-light">Items</th>
-                    <th class="text-primary fw-light">Qty & Price</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @if (cart.length < 1) {
-                    <div
-                      class="d-flex align-items-center justify-content-center mt-3"
-                    >
-                      <i class="fa-solid fa-tags text-secondary fs-5"></i>
-                      <span class="fs-7 text-secondary">Cart Empty</span>
-                    </div>
-                  }
-                  @for (item of cart; track $index) {
-                    <tr>
-                      <td class="d-flex align-items-center">
-                        <img
-                          src="item.picture"
-                          alt=""
-                          width="40"
-                          height="40"
-                          class="rounded-circle me-2"
-                        />
-                        <div class="d-flex flex-column text-secondary">
-                          <span class="fs-7"> {{ item.name }} </span>
-                          <span class="fs-7"
-                            ><span class="text-success"> {{ item.price }} </span
-                            >BIF</span
-                          >
-                        </div>
-                      </td>
-                      <td class="my-auto">
-                        <div>
-                          <button
-                            class="bg-primary increment rounded text-white"
-                            (click)="dimunuerQuantite(item.name)"
-                          >
-                            -
-                          </button>
-                          <span class="mx-3 text-secondary">
-                            {{ item.qty }}
-                          </span>
-                          <button
-                            class="bg-primary increment rounded text-white"
-                            (click)="augmenterQuantite(item.name)"
-                          >
-                            +
-                          </button>
-                        </div>
-                        <div>
-                          <span class="fs-7 text-secondary"
-                            >Rp : {{ item.price * item.qty }}</span
-                          >
-                        </div>
-                      </td>
-                    </tr>
-                  }
-                </tbody>
-              </table>
-              <br />
-              <div class="border-top">
-                <table class="table mt-3">
-                  <tbody class="text-secondary">
-                    <tr>
-                      <td>SubTotal</td>
-                      <td class="text-end text-success">Rp 48 000</td>
-                    </tr>
-                    <tr>
-                      <td>Discount</td>
-                      <td class="text-end text-success">Rp 0</td>
-                    </tr>
-                    <tr>
-                      <td>Total</td>
-                      <td class="text-end text-success">Rp 48 000</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-6">
-          <div>
-            <h5>Payment method</h5>
-            <div class="d-flex align-items-center text-dark">
-              <span class="bg-primary p-3 rounded me-2 text-light" role="button"
-                >Cash</span
-              >
-              <span class="bg-light p-3 rounded me-2" role="button">Card</span>
-              <span class="bg-light p-3 rounded me-2" role="button"
-                >Mobile Money</span
-              >
-            </div>
-            <div class="my-3">
-              <div class="amount border rounded p-4 text-end mb-2">
-                <span> {{ montant }} BIF</span>
-              </div>
-              <div class="numpad row">
-                <app-button
-                  (clicked)="onButtonClicked('1')"
-                  [valeur]="'1'"
-                  class="col-4"
-                ></app-button>
-                <app-button
-                  (clicked)="onButtonClicked('2')"
-                  [valeur]="'2'"
-                  class="col-4"
-                ></app-button>
-                <app-button
-                  (clicked)="onButtonClicked('3')"
-                  [valeur]="'3'"
-                  class="col-4"
-                ></app-button>
-                <app-button
-                  (clicked)="onButtonClicked('4')"
-                  [valeur]="'4'"
-                  class="col-4"
-                ></app-button>
-                <app-button
-                  (clicked)="onButtonClicked('5')"
-                  [valeur]="'5'"
-                  class="col-4"
-                ></app-button>
-                <app-button
-                  (clicked)="onButtonClicked('6')"
-                  [valeur]="'6'"
-                  class="col-4"
-                ></app-button>
-                <app-button
-                  (clicked)="onButtonClicked('7')"
-                  [valeur]="'7'"
-                  class="col-4"
-                ></app-button>
-                <app-button
-                  (clicked)="onButtonClicked('8')"
-                  [valeur]="'8'"
-                  class="col-4"
-                ></app-button>
-                <app-button
-                  (clicked)="onButtonClicked('9')"
-                  [valeur]="'9'"
-                  class="col-4"
-                ></app-button>
-                <app-button
-                  (clicked)="onButtonClicked('0')"
-                  [valeur]="'0'"
-                  class="col-4"
-                ></app-button>
-                <app-button
-                  (clicked)="onButtonClicked('C')"
-                  [valeur]="'C'"
-                  class="col-4"
-                ></app-button>
-                <app-button
-                  (clicked)="onButtonClicked('X')"
-                  [valeur]="'X'"
-                  class="col-4"
-                ></app-button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          Close
-        </button>
-        <button type="button" class="btn btn-primary">Confirm Payment</button>
-      </div>
+      <div><i class="fa-solid fa-circle-notch fa-spin"></i></div>
+      @if (!isSubmiting) {
+        <div class="modal-body"></div>
+      }
     </div>
   </div>
 </div>
