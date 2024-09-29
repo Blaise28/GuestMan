@@ -19,6 +19,7 @@ import { getBookingAction } from '../../store/dashboard/states/booking/booking.a
 import { map } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../../Global/dialog/dialog.component';
+import { WalletState } from '../../store/dashboard/states/wallets/wallet.state';
 
 @Component({
   selector: 'app-header',
@@ -39,6 +40,8 @@ export class HeaderComponent implements OnInit {
   user$!: Observable<any>;
   room$!: Observable<any>;
   rooms!: any;
+  wallets$!: Observable<any>;
+  wallets!: any;
   protected onDestroy$: Subject<void> = new Subject<void>();
   user!: any;
   showMenu!: boolean;
@@ -54,6 +57,7 @@ export class HeaderComponent implements OnInit {
   ) {
     this.user$ = this._store.select(UserState.getUser);
     this.room$ = this._store.select(RoomState.getRooms);
+    this.wallets$ = this._store.select(WalletState.getWallet);
     const today = new Date();
     const day = String(today.getDate()).padStart(2, '0');
     const month = String(today.getMonth() + 1).padStart(2, '0'); // Les mois commencent à 0
@@ -65,12 +69,16 @@ export class HeaderComponent implements OnInit {
       chambre: new FormControl(0),
       date_arrivee: ['', [Validators.required]],
       date_depart: ['', [Validators.required]],
+      caisse: ['', [Validators.required]],
     });
   }
 
   ngOnInit(): void {
     this.user$.pipe(takeUntil(this.onDestroy$)).subscribe((data) => {
       this.user = data;
+    });
+    this.wallets$.pipe(takeUntil(this.onDestroy$)).subscribe((data) => {
+      this.wallets = data;
     });
     this.room$
       .pipe(

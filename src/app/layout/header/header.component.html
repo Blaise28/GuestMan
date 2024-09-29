@@ -181,6 +181,22 @@
                 <label for="floatingInput">Date Depart</label>
               </div>
             </div>
+            <div class="col-md-6">
+              <div class="form-floating mb-2">
+                <select
+                  class="form-select"
+                  id="floatingSelectGrid"
+                  formControlName="caisse"
+                >
+                  @for (wallet of wallets.results; track $index) {
+                    <option [ngValue]="wallet.account_code">
+                      Caisse {{ wallet.account_code }}
+                    </option>
+                  }
+                </select>
+                <label for="floatingSelectGrid">Caisse</label>
+              </div>
+            </div>
           </div>
         </form>
       </div>

@@ -12,6 +12,8 @@ import { getClientAction } from './store/dashboard/states/client/client.actions'
 import { getProductAction } from './store/dashboard/states/product/product.actions';
 import { getCategoryAction } from './store/dashboard/states/category/category.actions';
 import { getOrderAction } from './store/dashboard/states/orders/order.action';
+import { getWalletAction } from './store/dashboard/states/wallets/wallet.actions';
+import { getTransactionAction } from './store/dashboard/states/transaction/transaction.actions';
 
 @Component({
   selector: 'app-root',
@@ -39,6 +41,8 @@ export class AppComponent {
       this._store.dispatch(new Populate());
       this._store.dispatch(new getCategoryAction());
       this._store.dispatch(new getOrderAction());
+      this._store.dispatch(new getWalletAction());
+      this._store.dispatch(new getTransactionAction());
     } else {
       //
     }

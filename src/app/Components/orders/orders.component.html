@@ -33,7 +33,7 @@
 <div class="content d-flex flex-wrap">
   @if (bills) {
     @for (item of bills; track $index) {
-      <div class="bill m-3" routerLink="details/{{ item.code }}">
+      <div class="bill m-2" routerLink="details/{{ item.code }}">
         <app-ticket [ticketData]="item"></app-ticket>
       </div>
     }

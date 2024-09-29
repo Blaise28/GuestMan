@@ -7,3 +7,4 @@ export * from './client.service';
 export * from './product.service';
 export * from './operator.service';
 export * from './bill.service';
+export * from './caisse.service';

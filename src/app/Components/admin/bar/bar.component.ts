@@ -45,7 +45,7 @@ export class BarComponent implements OnInit {
     this.productList$ = this._store.select(ProductState.getProduct);
     this.category$ = this._store.select(CategoryState.getCategory);
     this.productForm = this.fb.group({
-      nom: ['', Validators.required],
+      name: ['', Validators.required],
       category: ['', Validators.required],
       prix_unitaire: ['', Validators.required],
       stock: ['', Validators.required],

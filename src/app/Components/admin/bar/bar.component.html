@@ -40,7 +40,7 @@
               }
             </div>
             <div class="body my-3 mx-1">
-              <p class="text-secondary mb-1">{{ item.nom }}</p>
+              <p class="text-secondary mb-1">{{ item.name }}</p>
               <p class="m-0 d-flex justify-content-between">
                 <small>{{ item.prix_unitaire | number }} BIF</small>
                 <small class="text-success fw-bold">{{ item.stock }}</small>
@@ -54,10 +54,10 @@
     </div>
   </div>
   @if (productArticle) {
-    <div class="col-4">
+    <div class="col-4 shadow">
       <div class="py-2 border-bottom">
-        <div class="input-group mb-3 bg-ligh">
-          <h4 class="text-secondary">Product Details</h4>
+        <div class="input-group my-3">
+          <h4 class="text-secondary my-auto ms-3">Product Details</h4>
         </div>
       </div>
       <div class="img">
@@ -88,7 +88,7 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">New Beverage</h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">New Product</h1>
         <button
           type="button"
           class="btn-close"
@@ -106,7 +106,7 @@
                 class="form-control"
                 id="floatingInput"
                 placeholder="name@example.com"
-                formControlName="nom"
+                formControlName="name"
               />
               <label for="floatingInput">Nom</label>
             </div>
