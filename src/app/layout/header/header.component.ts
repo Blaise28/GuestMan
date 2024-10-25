@@ -20,6 +20,7 @@ import { map } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../../Global/dialog/dialog.component';
 import { WalletState } from '../../store/dashboard/states/wallets/wallet.state';
+import { TaxState } from '../../store/dashboard/states/tax/tax.state';
 
 @Component({
   selector: 'app-header',
@@ -42,6 +43,10 @@ export class HeaderComponent implements OnInit {
   rooms!: any;
   wallets$!: Observable<any>;
   wallets!: any;
+  tax$!: Observable<any>;
+  tax!: any;
+  operatorId$!: Observable<any>;
+  operatorId!: any;
   protected onDestroy$: Subject<void> = new Subject<void>();
   user!: any;
   showMenu!: boolean;
@@ -58,6 +63,8 @@ export class HeaderComponent implements OnInit {
     this.user$ = this._store.select(UserState.getUser);
     this.room$ = this._store.select(RoomState.getRooms);
     this.wallets$ = this._store.select(WalletState.getWallet);
+    this.tax$ = this._store.select(TaxState.getTax);
+    this.operatorId$ = this._store.select(UserState.getUserId);
     const today = new Date();
     const day = String(today.getDate()).padStart(2, '0');
     const month = String(today.getMonth() + 1).padStart(2, '0'); // Les mois commencent à 0
@@ -70,6 +77,7 @@ export class HeaderComponent implements OnInit {
       date_arrivee: ['', [Validators.required]],
       date_depart: ['', [Validators.required]],
       caisse: ['', [Validators.required]],
+      tax: ['', [Validators.required]],
     });
   }
 
@@ -79,6 +87,9 @@ export class HeaderComponent implements OnInit {
     });
     this.wallets$.pipe(takeUntil(this.onDestroy$)).subscribe((data) => {
       this.wallets = data;
+    });
+    this.tax$.pipe(takeUntil(this.onDestroy$)).subscribe((data) => {
+      this.tax = data;
     });
     this.room$
       .pipe(
@@ -90,6 +101,9 @@ export class HeaderComponent implements OnInit {
       .subscribe((data) => {
         this.rooms = data;
       });
+    this.operatorId$.pipe(takeUntil(this.onDestroy$)).subscribe((data) => {
+      this.operatorId = data;
+    });
   }
 
   searchClients() {
@@ -109,6 +123,7 @@ export class HeaderComponent implements OnInit {
     this.isSubmiting = true;
     const data = this.bookingForm.value;
     data['client'] = this.selectedItems.id;
+    data['done_by'] = this.operatorId;
     this._book
       .newBooking(data)
       .pipe(takeUntil(this.onDestroy$))

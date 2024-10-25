@@ -32,6 +32,9 @@ import { CategoryState } from './store/dashboard/states/category/category.state'
 import { OrderState } from './store/dashboard/states/orders/order.state';
 import { WalletState } from './store/dashboard/states/wallets/wallet.state';
 import { TransactionState } from './store/dashboard/states/transaction/transaction.state';
+import { ProcurementState } from './store/dashboard/states/procurement/procurement.state';
+import { TaxState } from './store/dashboard/states/tax/tax.state';
+import { TableState } from './store/dashboard/states/table/table.state';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -54,6 +57,9 @@ export const appConfig: ApplicationConfig = {
         OrderState,
         WalletState,
         TransactionState,
+        ProcurementState,
+        TaxState,
+        TableState,
       ],
       // withNgxsStoragePlugin({
       //   keys: ['auth.token.access'],
@@ -71,6 +77,7 @@ export const appConfig: ApplicationConfig = {
     Services.ClientService,
     Services.ProductService,
     Services.OperatorService,
+    Services.OperationService,
     Guards.AuthGuard,
     Guards.StaffGuard,
   ],

@@ -1,6 +1,7 @@
 <h5 class="modal-title" id="staticBackdropLabel">
   <div class="d-flex flex-wrap fs-6 mb-3 align-item-center">
-    Order# <span class="text-secondary fw-light me-4">{{ bill?.code }}</span>
+    Order
+    <span class="text-secondary fw-light me-4 ms-2"> #{{ bill?.code }}</span>
     @if (bill?.status === "PAYEMENT_STATUS_PENDING") {
       <span class="py-2 badge rounded-pill bg-badge-warning px-5">{{
         bill?.status !== "PAYEMENT_STATUS_PENDING" ? "Paid" : "Peding"
@@ -12,8 +13,11 @@
     }
   </div>
 </h5>
-<div class="modal-body row">
-  <div class="col-6 cart bg-success-subtle rounded-3 py-3">
+<div class="row">
+  <div
+    class="col-6 cart bg-success-subtle rounded-3 py-3"
+    style="overflow-y: auto; max-height: 700px"
+  >
     <div class="cart-details">
       <div class="d-flex flex-column" style="height: 100%">
         <table class="table m-0">
@@ -91,95 +95,97 @@
       </div>
     </div>
   </div>
-  <div class="col-6">
-    <div>
-      <h5>Payment method</h5>
-      <div class="d-flex align-items-center text-dark">
-        <span class="bg-primary p-3 rounded me-2 text-light" role="button"
-          >Cash</span
-        >
-        <span class="bg-light p-3 rounded me-2" role="button">Card</span>
-        <span class="bg-light p-3 rounded me-2" role="button"
-          >Mobile Money</span
-        >
+  @if (bill?.status !== "PAYMENT_STATUS_CONFIRMED") {
+    <div class="col-6">
+      <div>
+        <h5>Payment method</h5>
+        <div class="d-flex align-items-center text-dark">
+          <span class="bg-primary p-3 rounded me-2 text-light" role="button"
+            >Cash</span
+          >
+          <span class="bg-light p-3 rounded me-2" role="button">Card</span>
+          <span class="bg-light p-3 rounded me-2" role="button"
+            >Mobile Money</span
+          >
+        </div>
+        <div class="my-3">
+          <div class="amount border rounded p-4 text-end mb-2">
+            <span> {{ montant | number }} BIF</span>
+          </div>
+          <div class="numpad row">
+            <app-button
+              (clicked)="onButtonClicked('1')"
+              [valeur]="'1'"
+              class="col-4"
+            ></app-button>
+            <app-button
+              (clicked)="onButtonClicked('2')"
+              [valeur]="'2'"
+              class="col-4"
+            ></app-button>
+            <app-button
+              (clicked)="onButtonClicked('3')"
+              [valeur]="'3'"
+              class="col-4"
+            ></app-button>
+            <app-button
+              (clicked)="onButtonClicked('4')"
+              [valeur]="'4'"
+              class="col-4"
+            ></app-button>
+            <app-button
+              (clicked)="onButtonClicked('5')"
+              [valeur]="'5'"
+              class="col-4"
+            ></app-button>
+            <app-button
+              (clicked)="onButtonClicked('6')"
+              [valeur]="'6'"
+              class="col-4"
+            ></app-button>
+            <app-button
+              (clicked)="onButtonClicked('7')"
+              [valeur]="'7'"
+              class="col-4"
+            ></app-button>
+            <app-button
+              (clicked)="onButtonClicked('8')"
+              [valeur]="'8'"
+              class="col-4"
+            ></app-button>
+            <app-button
+              (clicked)="onButtonClicked('9')"
+              [valeur]="'9'"
+              class="col-4"
+            ></app-button>
+            <app-button
+              (clicked)="onButtonClicked('0')"
+              [valeur]="'0'"
+              class="col-4"
+            ></app-button>
+            <app-button
+              (clicked)="onButtonClicked('C')"
+              [valeur]="'C'"
+              class="col-4"
+            ></app-button>
+            <app-button
+              (clicked)="onButtonClicked('X')"
+              [valeur]="'X'"
+              class="col-4"
+            ></app-button>
+          </div>
+        </div>
       </div>
-      <div class="my-3">
-        <div class="amount border rounded p-4 text-end mb-2">
-          <span> {{ montant | number }} BIF</span>
-        </div>
-        <div class="numpad row">
-          <app-button
-            (clicked)="onButtonClicked('1')"
-            [valeur]="'1'"
-            class="col-4"
-          ></app-button>
-          <app-button
-            (clicked)="onButtonClicked('2')"
-            [valeur]="'2'"
-            class="col-4"
-          ></app-button>
-          <app-button
-            (clicked)="onButtonClicked('3')"
-            [valeur]="'3'"
-            class="col-4"
-          ></app-button>
-          <app-button
-            (clicked)="onButtonClicked('4')"
-            [valeur]="'4'"
-            class="col-4"
-          ></app-button>
-          <app-button
-            (clicked)="onButtonClicked('5')"
-            [valeur]="'5'"
-            class="col-4"
-          ></app-button>
-          <app-button
-            (clicked)="onButtonClicked('6')"
-            [valeur]="'6'"
-            class="col-4"
-          ></app-button>
-          <app-button
-            (clicked)="onButtonClicked('7')"
-            [valeur]="'7'"
-            class="col-4"
-          ></app-button>
-          <app-button
-            (clicked)="onButtonClicked('8')"
-            [valeur]="'8'"
-            class="col-4"
-          ></app-button>
-          <app-button
-            (clicked)="onButtonClicked('9')"
-            [valeur]="'9'"
-            class="col-4"
-          ></app-button>
-          <app-button
-            (clicked)="onButtonClicked('0')"
-            [valeur]="'0'"
-            class="col-4"
-          ></app-button>
-          <app-button
-            (clicked)="onButtonClicked('C')"
-            [valeur]="'C'"
-            class="col-4"
-          ></app-button>
-          <app-button
-            (clicked)="onButtonClicked('X')"
-            [valeur]="'X'"
-            class="col-4"
-          ></app-button>
-        </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-success"
+          [disabled]="!montant"
+          (click)="confirmPayment()"
+        >
+          Confirm Payment
+        </button>
       </div>
     </div>
-  </div>
-</div>
-<div class="modal-footer">
-  <button
-    type="button"
-    class="btn btn-success"
-    [disabled]="!montant"
-    (click)="confirmPayment()"
-  >
-    Confirm Payment
-  </button>
+  }
 </div>

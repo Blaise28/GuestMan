@@ -27,7 +27,7 @@
         <th>Operator Name</th>
         <th>Phone</th>
         <th>Adress</th>
-        <th>Email</th>
+        <th>Last Login</th>
         <th>Role</th>
         <th>Date Embauche</th>
       </tr>
@@ -38,9 +38,9 @@
           <td class="text-primary">{{ item.nom }} {{ item.prenom }}</td>
           <td class="text-secondary">{{ item.telephone }}</td>
           <td>{{ item.adresse }}</td>
-          <td class="text-success">{{ item.email }}</td>
+          <td class="text-success">{{ item.user.last_login }}</td>
           <td class="text-info">{{ item.role }}</td>
-          <td>{{ item.date_embauche }}</td>
+          <td>{{ item.user.date_joined }}</td>
         </tr>
       }
     </tbody>

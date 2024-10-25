@@ -7,22 +7,40 @@ import { AuthService } from '../../../../Core/services';
 
 export interface UserStateModel {
   id: number;
-  username: string;
-  email: string;
-  last_login: Date;
-  date_joined: Date;
-  is_staff: boolean;
+  user: {
+    id: number;
+    username: string;
+    last_login: Date;
+    date_joined: Date;
+    is_staff: boolean;
+  };
+  nom: string;
+  prenom: string;
+  adresse: string;
+  telephone: string;
+  role: string;
+  salaire: string;
+  photo: string;
 }
 
 @State<UserStateModel>({
   name: 'user',
   defaults: {
     id: 0,
-    username: '',
-    email: '',
-    last_login: new Date(Date.now()),
-    date_joined: new Date(Date.now()),
-    is_staff: false,
+    user: {
+      id: 0,
+      username: '',
+      last_login: new Date(Date.now()),
+      date_joined: new Date(Date.now()),
+      is_staff: false,
+    },
+    nom: '',
+    prenom: '',
+    adresse: '',
+    telephone: '',
+    role: '',
+    salaire: '',
+    photo: '',
   },
 })
 @Injectable()
@@ -47,11 +65,20 @@ export class UserState {
         result.forEach((element) => {
           ctx.patchState({
             id: element.id,
-            username: element.username,
-            email: element.email,
-            last_login: element.last_login,
-            date_joined: element.date_joined,
-            is_staff: element.is_staff,
+            user: {
+              id: element.user.id,
+              username: element.user.username,
+              last_login: element.user.last_login,
+              date_joined: element.user.date_joined,
+              is_staff: element.user.is_staff,
+            },
+            nom: element.nom,
+            prenom: element.prenom,
+            adresse: element.adresse,
+            telephone: element.telephone,
+            role: element.role,
+            salaire: element.salaire,
+            photo: element.photo,
           });
         });
         return result;

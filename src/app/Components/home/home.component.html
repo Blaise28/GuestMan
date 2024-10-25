@@ -15,10 +15,10 @@
     >
       <div class="p-4">
         <div class="text-dark">
-          <h2 class="mb-0 text-info">2</h2>
+          <h2 class="mb-0 text-info">{{ stats?.Reservation }}</h2>
           <small class="text-secondary">Total Tenant</small>
         </div>
-        <i class="bi bi-people-fill fs-4 text-secondary"></i>
+        <i class="fa-solid fa-users fs-4 text-secondary"></i>
       </div>
     </div>
     <div
@@ -32,7 +32,7 @@
     >
       <div class="p-3">
         <div class="text-dark">
-          <h2 class="mb-0 text-info">10</h2>
+          <h2 class="mb-0 text-info">{{ stats?.Room }}</h2>
           <small class="text-secondary">Total Rooms</small>
         </div>
         <i class="fa-solid fa-bed fs-4 text-secondary"></i>
@@ -72,7 +72,32 @@
         width: 250px;
         background: #e3cfff;
       "
-    ></div>
+    >
+      <div class="p-4">
+        <div class="text-dark">
+          <h2 class="mb-0 text-info">{{ stats?.Bill }}</h2>
+          <small class="text-secondary">Total Bill</small>
+        </div>
+        <i class="fa-solid fa-receipt fs-4 text-secondary"></i>
+      </div>
+    </div>
+    <div
+      class="m-3"
+      style="
+        border-radius: 20px;
+        height: 150px;
+        width: 250px;
+        background: #ffe6cf;
+      "
+    >
+      <div class="p-4">
+        <div class="text-dark">
+          <h2 class="mb-0 text-info">{{ stats?.Operator }}</h2>
+          <small class="text-secondary">Total Operator</small>
+        </div>
+        <i class="bi bi-people-fill fs-4 text-secondary"></i>
+      </div>
+    </div>
   </div>
 </div>
 <br />
@@ -81,8 +106,9 @@
     <h5 class="text-secondary mt-2">Latest Transaction</h5>
     <div class="border">
       <table class="table table-striped table-hover rounded">
-        <thead>
+        <thead class="text-secondary">
           <tr>
+            <th>#</th>
             <th>Date</th>
             <th>Caisse</th>
             <th>Amount</th>
@@ -93,9 +119,16 @@
         <tbody>
           @for (item of transactionList.results.slice(0, 10); track $index) {
             <tr>
+              <td>
+                @if (item.type_transaction === "ENTREE") {
+                  <i class="fa-solid fa-arrow-turn-down text-success fs-5"></i>
+                } @else if (item.type_transaction === "SORTI") {
+                  <i class="fa-solid fa-arrow-turn-up text-danger"></i>
+                }
+              </td>
               <td>{{ item.date | date: "mediumDate" }}</td>
               <td>{{ item.caisse }}</td>
-              <td>BIF {{ item.amount | number }}</td>
+              <td class="fw-bold">BIF {{ item.amount | number }}</td>
               <td>
                 {{ item.description }}
               </td>

@@ -5,12 +5,16 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { ApiService } from './api.service';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BillService {
-  constructor(private apiService: ApiService) {}
+  constructor(
+    private apiService: ApiService,
+    private http: HttpClient,
+  ) {}
 
   getBills(): Observable<unknown> {
     return this.apiService.get('/bills/').pipe(
@@ -55,5 +59,11 @@ export class BillService {
         return data;
       }),
     );
+  }
+
+  export(): Observable<Blob> {
+    return this.http.get('http://localhost:8000/api/export-bills/', {
+      responseType: 'blob',
+    });
   }
 }

@@ -14,9 +14,9 @@
   <div class="bg-white rounded text-secondary p-4">
     <div class="d-flex justify-content-between">
       <span class="fs-7 fw-bold">Client</span>
-      <h6 class="text-secondary fw-ligth">
-        {{ ticketData.reservation.client.nom }}
-        {{ ticketData.reservation.client.prenom }}
+      <h6 class="text-secondary fw-ligther">
+        {{ ticketData.reservation?.client.nom }}
+        {{ ticketData.reservation?.client.prenom }}
       </h6>
     </div>
     <div class="d-flex justify-content-between fs-6 mb-2">
@@ -53,6 +53,11 @@
       style="border: 1px solid #086b05"
     >
       <span>Dine-in</span>
+      @if (ticketData.table) {
+        <span class="text-success fw-bolder"
+          ><i class="fa-solid fa-couch"></i> {{ ticketData.table }}
+        </span>
+      }
       <i class="fa-solid fa-umbrella-beach rounded-circle"></i>
     </div>
   </div>

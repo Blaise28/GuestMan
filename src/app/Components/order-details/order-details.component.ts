@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Component, inject, OnInit } from '@angular/core';
+import { AfterViewInit, Component, inject } from '@angular/core';
 import { ButtonComponent } from '../../Global/button/button.component';
 import { ActivatedRoute } from '@angular/router';
 import { BillService } from '../../Core/services';
@@ -13,7 +13,7 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './order-details.component.html',
   styleUrl: './order-details.component.scss',
 })
-export class OrderDetailsComponent implements OnInit {
+export class OrderDetailsComponent implements AfterViewInit {
   montant: number = 0;
   cart: any[] = [];
   private _router = inject(ActivatedRoute);
@@ -22,7 +22,7 @@ export class OrderDetailsComponent implements OnInit {
   billCode!: number;
   bill!: any;
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
     this._router.params.subscribe((param) => {
       this.billCode = param['code'];
       if (this.billCode) {
@@ -33,18 +33,22 @@ export class OrderDetailsComponent implements OnInit {
     });
   }
 
-  confirmPayment() {
-    //const data = this.montant;
-    // Traitement du paiement
-    this._billService.confirm(this.billCode).subscribe({
-      next: (res: any) => {
-        this.toastr.success(res.message);
-        this.ngOnInit();
-      },
-      error: () => {
-        this.toastr.error('Error');
-      },
-    });
+  async confirmPayment() {
+    console.log(this.bill.amount_total, this.montant);
+    if (this.bill.amount_total == this.montant) {
+      // Traitement du paiement
+      this._billService.confirm(this.billCode).subscribe({
+        next: (res: any) => {
+          this.toastr.success(res.message);
+          this.ngAfterViewInit();
+        },
+        error: () => {
+          this.toastr.error('Error');
+        },
+      });
+    } else {
+      alert('Not enougth amount');
+    }
   }
   onButtonClicked(valeur: string) {
     if (valeur === 'C') {

@@ -30,7 +30,7 @@ export class AuthService {
     );
   }
   populate() {
-    return this.apiService.get('/user/').pipe(
+    return this.apiService.get('/populate/').pipe(
       map((data) => {
         return data;
       }),

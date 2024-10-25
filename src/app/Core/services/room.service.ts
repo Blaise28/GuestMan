@@ -33,4 +33,20 @@ export class RoomService {
       }),
     );
   }
+
+  getTables(): Observable<unknown> {
+    return this.apiService.get('/table/').pipe(
+      map((data) => {
+        return data;
+      }),
+    );
+  }
+
+  newTable(data: any) {
+    return this.apiService.post('/table/', data).pipe(
+      map((data) => {
+        return data;
+      }),
+    );
+  }
 }

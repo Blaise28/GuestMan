@@ -1,5 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  effect,
+  inject,
+  OnInit,
+  signal,
+  ViewChild,
+} from '@angular/core';
 import { ProductCardComponent } from '../../Global/product-card/product-card.component';
 import { ButtonComponent } from '../../Global/button/button.component';
 import { TimeComponent } from '../../Global/time/time.component';
@@ -20,6 +27,9 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ProductState } from '../../store/dashboard/states/product/product.state';
 import { CategoryState } from '../../store/dashboard/states/category/category.state';
 import { BookingState } from '../../store/dashboard/states/booking/booking.state';
+import { UserState } from '../../store/dashboard/states/user/user.state';
+import { TableState } from '../../store/dashboard/states/table/table.state';
+import { WalletState } from '../../store/dashboard/states/wallets/wallet.state';
 
 @Component({
   selector: 'app-counter',
@@ -41,9 +51,9 @@ export class CounterComponent implements OnInit {
   private _route = inject(ActivatedRoute);
   private _billService = inject(BillService);
   product!: any;
-  cart: any[] = [];
+  cart = signal<any[]>([]);
   montant: number = 0;
-  table: boolean = false;
+  table: boolean = true;
   resident: boolean = false;
   residentValue: string = '';
   @ViewChild('closemodal') closemodal: any;
@@ -62,8 +72,16 @@ export class CounterComponent implements OnInit {
   validCart: any[] = [];
   showBar!: boolean | null;
   reservationId = new FormControl('');
+  tableNum = new FormControl('');
   selectedCategory!: any;
   search = new FormControl('');
+  operatorId$!: Observable<any>;
+  operatorId!: any;
+  tableNumber$!: Observable<any>;
+  tableNumber!: any;
+  wallets$!: Observable<any>;
+  wallets!: any;
+  total = 0;
   protected onDestroy$: Subject<void> = new Subject<void>();
   constructor(
     private fb: FormBuilder,
@@ -73,13 +91,25 @@ export class CounterComponent implements OnInit {
     this.productList$ = this._store.select(ProductState.getProduct);
     this.category$ = this._store.select(CategoryState.getCategory);
     this.bookingList$ = this._store.select(BookingState.getBooking);
+    this.operatorId$ = this._store.select(UserState.getUserId);
+    this.tableNumber$ = this._store.select(TableState.getTable);
+    this.wallets$ = this._store.select(WalletState.getWallet);
     this.billForm = this.fb.group({
       reservation_id: ['', Validators.required],
       items: ['', Validators.required],
     });
+    effect(
+      () => {
+        this.refreshCart();
+      },
+      { allowSignalWrites: true },
+    );
   }
   ngOnInit(): void {
     //
+    this.tableNumber$.pipe(takeUntil(this.onDestroy$)).subscribe((data) => {
+      this.tableNumber = data.results;
+    });
     this.bookingList$.pipe(takeUntil(this.onDestroy$)).subscribe((data) => {
       this.bookingList = data.results;
     });
@@ -89,6 +119,12 @@ export class CounterComponent implements OnInit {
     this.category$.pipe(takeUntil(this.onDestroy$)).subscribe((data) => {
       this.category = data.allCategory;
     });
+    this.operatorId$.pipe(takeUntil(this.onDestroy$)).subscribe((data) => {
+      this.operatorId = data;
+    });
+    this.wallets$.pipe(takeUntil(this.onDestroy$)).subscribe((data) => {
+      this.wallets = data.results[0];
+    });
   }
   setRefreshTime() {
     setInterval(() => {
@@ -96,9 +132,9 @@ export class CounterComponent implements OnInit {
     }, 6000);
   }
   addToCart(product: any) {
-    if (product && !this.cart.includes(product)) {
+    if (product && !this.cart().includes(product)) {
       product['quantity'] = 1;
-      this.cart.push(product);
+      this.cart.update((products) => [...products, product]);
       const validProduct = {
         product: product.id,
       };
@@ -108,18 +144,25 @@ export class CounterComponent implements OnInit {
     }
   }
   augmenterQuantite(produitId: number) {
-    const produit = this.cart.find((p) => p.id === produitId);
+    const produit = this.cart().find((p) => p.id === produitId);
     if (produit.stock && produit.quantity <= produit.stock) {
       produit.quantity++;
+      this.validCart.find((p) => p.product === produitId).quantity++;
+      this.refreshCart();
     } else if (!produit.stock) {
       produit.quantity++;
+      this.validCart.find((p) => p.product === produitId).quantity++;
+      this.refreshCart();
     } else {
       alert('Quantité dépassée');
     }
   }
   dimunuerQuantite(produitId: number) {
-    const produit = this.cart.find((p) => p.id === produitId);
+    const produit = this.cart().find((p) => p.id === produitId);
+    this.validCart.find((p) => p.product === produitId).quantity--;
     produit.quantity--;
+    this.refreshCart();
+    console.log(this.cart());
   }
   onButtonClicked(valeur: string) {
     if (valeur === 'C') {
@@ -133,11 +176,14 @@ export class CounterComponent implements OnInit {
     }
   }
   takeTable() {
-    this.table = !this.table;
+    this.reservationId.reset();
   }
   dropProduct(productId: any) {
-    const produit = this.cart.findIndex((p) => p.id === productId);
-    this.cart.splice(produit, 1);
+    const produitCard = this.cart().findIndex((p) => p.id === productId);
+    this.cart().splice(produitCard, 1);
+    const produit = this.validCart.findIndex((p) => p.id === productId);
+    this.validCart.splice(produit, 1);
+    this.refreshCart();
   }
 
   selectCategory(event: any) {
@@ -150,15 +196,22 @@ export class CounterComponent implements OnInit {
   }
 
   submitBill() {
+    console.log(this.cart);
     this.isSubmiting = true;
     const data = this.billForm.value;
-    const clientId: string | null = this.reservationId.value;
-    data['reservation_id'] = Number(clientId);
+    let clientId: null | number = null;
+    if (this.reservationId.value) {
+      clientId = Number(this.reservationId.value);
+    }
+    data['reservation_id'] = clientId;
     data['items'] = this.validCart;
+    data['done_by'] = this.operatorId;
+    data['table'] = Number(this.tableNum.value);
+    data['caisse'] = this.wallets.account_code;
     this._billService.newBill(data).subscribe({
       next: (res: any) => {
         this.toastr.success(res.message);
-        this.cart = [];
+        this.cart.set([]);
         this.montant = 0;
         this.isSubmiting = false;
       },
@@ -178,6 +231,18 @@ export class CounterComponent implements OnInit {
           console.error(error);
         },
       });
+    }
+  }
+
+  refreshCart() {
+    if (this.cart().length > 0) {
+      this.total = 0;
+      for (const item of this.cart()) {
+        console.log(item);
+        this.total = this.total + item.prix_unitaire * item.quantity;
+      }
+    } else if (this.cart().length <= 0) {
+      this.total = 0;
     }
   }
 }

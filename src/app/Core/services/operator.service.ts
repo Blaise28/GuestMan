@@ -15,6 +15,13 @@ export class OperatorService {
       }),
     );
   }
+  getStats(): Observable<unknown> {
+    return this.apiService.get('/count-elements/').pipe(
+      map((data) => {
+        return data;
+      }),
+    );
+  }
   getOperator(id: number): Observable<unknown> {
     return this.apiService.get(`/operator/${id}/`).pipe(
       map((data) => {

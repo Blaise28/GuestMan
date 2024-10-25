@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { WalletState } from '../../store/dashboard/states/wallets/wallet.state';
+import { OperatorService } from '../../Core/services';
 
 @Component({
   selector: 'app-home',
@@ -20,8 +21,9 @@ export class HomeComponent implements OnInit {
   transactionList!: any;
   caisse$!: Observable<any>;
   caisse!: any;
+  stats!: any;
   protected onDestroy$: Subject<void> = new Subject<void>();
-  constructor() {
+  constructor(private operatorService: OperatorService) {
     this.transactionList$ = this._store.select(TransactionState.getTransaction);
     this.caisse$ = this._store.select(WalletState.getWallet);
   }
@@ -31,6 +33,17 @@ export class HomeComponent implements OnInit {
     });
     this.caisse$.pipe(takeUntil(this.onDestroy$)).subscribe((data) => {
       this.caisse = data.results;
+    });
+    this.getStats();
+  }
+  getStats() {
+    this.operatorService.getStats().subscribe({
+      next: (data) => {
+        this.stats = data;
+      },
+      error: (error) => {
+        console.error(error);
+      },
     });
   }
 }
