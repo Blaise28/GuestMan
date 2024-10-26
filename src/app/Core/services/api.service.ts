@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
@@ -23,9 +24,19 @@ export class ApiService {
         retry({ count: 3, delay: 2000, resetOnSuccess: true }),
       );
   }
-  post(path: string, body: object = {}): Observable<unknown> {
+  post(
+    path: string,
+    body: object = {},
+    isFormData: boolean = false,
+  ): Observable<unknown> {
+    let bodyToSend: any;
+    if (isFormData) {
+      bodyToSend = body;
+    } else {
+      bodyToSend = JSON.stringify(body);
+    }
     return this.http
-      .post(`${environment.apiUrl}${path}`, JSON.stringify(body), {
+      .post(`${environment.apiUrl}${path}`, bodyToSend, {
         reportProgress: true,
       })
       .pipe(catchError(this.formatErrors));

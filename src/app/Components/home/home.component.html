@@ -118,7 +118,7 @@
         </thead>
         <tbody>
           @for (item of transactionList.results.slice(0, 10); track $index) {
-            <tr>
+            <tr [@list-transactions]="animationStates[$index]">
               <td>
                 @if (item.type_transaction === "ENTREE") {
                   <i class="fa-solid fa-arrow-turn-down text-success fs-5"></i>

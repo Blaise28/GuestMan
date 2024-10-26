@@ -22,6 +22,9 @@ import { OrdersComponent } from './Components/orders/orders.component';
 import { ReportsComponent } from './Components/reports/reports.component';
 import { BarComponent } from './Components/admin/bar/bar.component';
 import { OrderDetailsComponent } from './Components/order-details/order-details.component';
+import { TransactionsComponent } from './Components/admin/transactions/transactions.component';
+import { SettingsComponent } from './Components/admin/settings/settings.component';
+import { ProcurementComponent } from './Components/admin/procurement/procurement.component';
 
 export const routes: Routes = [
   {
@@ -103,6 +106,18 @@ export const routes: Routes = [
           {
             path: 'bar',
             component: BarComponent,
+          },
+          {
+            path: 'procurement',
+            component: ProcurementComponent,
+          },
+          {
+            path: 'transaction',
+            component: TransactionsComponent,
+          },
+          {
+            path: 'setting',
+            component: SettingsComponent,
           },
         ],
       },

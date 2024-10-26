@@ -1,0 +1,34 @@
+<div class="table-responsive">
+  <div class="table-option my-4">
+    <h5>Filter</h5>
+  </div>
+  <table class="table table-striped table-hover">
+    <thead>
+      @if (header) {
+        <tr>
+          @for (item of header; track $index) {
+            <th>{{ item }}</th>
+          }
+        </tr>
+      }
+    </thead>
+    @if (data.length > 0) {
+      <tbody>
+        @for (item of data; track $index) {
+          <tr routerLink="/l/Tdetails/ {{ item.id }}">
+            <td>{{ item.id }}</td>
+            <td>{{ item.amount | number }} BIF</td>
+            <td>{{ item.description }}</td>
+            <td>{{ item.Operator.nom }} {{ item.Operator.prenom }}</td>
+            <td>{{ item.created_at | date: "mediumDate" }}</td>
+          </tr>
+        }
+      </tbody>
+    }
+  </table>
+  @if (data.length <= 0) {
+    <div class="d-flex justify-content-center mt-4 aling-items-center">
+      <span class="text-danger fs-4 fw-bold">No data found</span>
+    </div>
+  }
+</div>

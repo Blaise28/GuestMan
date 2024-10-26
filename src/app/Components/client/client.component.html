@@ -54,7 +54,10 @@
     </thead>
     <tbody>
       @for (item of client?.results; track $index) {
-        <tr routerLink="/l/Cdetails/ {{ item.id }}">
+        <tr
+          routerLink="/l/Cdetails/ {{ item.id }}"
+          [@list-transactions]="animationStates[$index]"
+        >
           <td>{{ item.nom }} {{ item.prenom }}</td>
           <td>{{ item.telephone }}</td>
           <td>{{ item.adresse }}</td>

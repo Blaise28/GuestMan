@@ -15,6 +15,13 @@ import {
 import { ClientService } from '../../Core/services';
 import { ToastrService } from 'ngx-toastr';
 import { getClientAction } from '../../store/dashboard/states/client/client.actions';
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
 
 @Component({
   selector: 'app-client',
@@ -22,8 +29,45 @@ import { getClientAction } from '../../store/dashboard/states/client/client.acti
   imports: [RouterModule, FormsModule, ReactiveFormsModule],
   templateUrl: './client.component.html',
   styleUrl: './client.component.scss',
+  animations: [
+    trigger('list-transactions', [
+      state(
+        'default',
+        style({
+          transform: 'scale(1)',
+          'background-color': 'white',
+          'z-idex': 1,
+        }),
+      ),
+      state(
+        'active',
+        style({
+          transform: 'scale(1.05)',
+          'background-color': 'rgb(201,157,242)',
+          'z-index': 2,
+        }),
+      ),
+      transition('void => *', [
+        style({
+          transform: 'translateX(-100%)',
+          opacity: 0,
+          'background-color': 'rgb(201,157,242)',
+        }),
+        animate(
+          '0.5s ease-in',
+          style({
+            transform: 'translateX(0)',
+            opacity: 1,
+            'background-color': 'white',
+          }),
+        ),
+      ]),
+      //transition('* => default', [animate('0.5s ease-out')]),
+    ]),
+  ],
 })
 export class ClientComponent implements OnInit {
+  animationStates: { [key: number]: 'default' | 'active' } = {};
   @ViewChild('closemodal') closemodal: any;
   private refreshSubject = new Subject<void>();
   private _store = inject(Store);

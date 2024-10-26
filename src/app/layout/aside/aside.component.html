@@ -97,7 +97,7 @@
       </a>
     </li>
     <li class="mb-1">
-      @if (user.is_staff) {
+      @if (user.user.is_staff) {
         <a
           href="#"
           class="nav-link text-white"
@@ -105,7 +105,7 @@
           routerLinkActive="active"
         >
           <i class="fa-solid fa-computer me-2"></i>
-          Stock
+          Admin
         </a>
       }
     </li>

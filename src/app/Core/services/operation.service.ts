@@ -44,8 +44,8 @@ export class OperationService {
       }),
     );
   }
-  newProcurement(data: any) {
-    return this.apiService.post('/procurement/', data).pipe(
+  newProcurement(data: FormData) {
+    return this.apiService.post('/procurement/', data, true).pipe(
       map((data) => {
         return data;
       }),

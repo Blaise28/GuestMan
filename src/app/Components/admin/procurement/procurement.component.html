@@ -1,0 +1,137 @@
+<h3>Procurement Overview</h3>
+<div class="d-flex align-items-center bg-light rounded p-3 row">
+  <div class="d-flex align-items-center col-3">
+    <div class="p-2 bg-success-subtle rounded">
+      <i class="fa-solid fa-user-group fs-4 text-success"></i>
+    </div>
+    <div class="d-flex flex-column ms-3 text-success-emphasis">
+      <span class="fs-4 fw-bold"> {{ procurement?.count }} </span>
+      <small>Total Tanents</small>
+    </div>
+  </div>
+  <div class="d-flex align-items-center col-3">
+    <div class="p-2 bg-info-subtle rounded">
+      <i class="fa-solid fa-user-clock fs-4 text-info"></i>
+    </div>
+    <div class="d-flex flex-column ms-3 text-info-emphasis">
+      <span class="fs-4 fw-bold">5</span> <small>Tanents wait</small>
+    </div>
+  </div>
+  <div class="d-flex align-items-center col-3"></div>
+  <div class="d-flex align-items-center col-3">
+    <div class="border rounded bg-success-subtle">
+      <button
+        class="btn px-4 py-3 fw-bold"
+        data-bs-toggle="modal"
+        data-bs-target="#procurementModal"
+      >
+        <i class="fa-solid fa-plus text-white me-1"></i> New
+      </button>
+    </div>
+  </div>
+</div>
+<app-list [header]="header" [data]="procurement?.results"></app-list>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="procurementModal"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content p-4">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Procurement</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+          #closemodal
+        ></button>
+      </div>
+      <div class="modal-body p-5">
+        <!-- New booking form -->
+        <form
+          [formGroup]="procurementForm"
+          enctype="multipart/form-data"
+          #fileForm="ngForm"
+        >
+          <div class="row g-2">
+            <div class="col-md-6" style="position: relative">
+              <div class="form-floating mb-2">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="floatingInputGrid"
+                  placeholder="Search..."
+                  formControlName="amount"
+                />
+                <label for="floatingInputGrid">Amount</label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-floating mb-2">
+                <select
+                  class="form-select"
+                  id="floatingSelectGrid"
+                  formControlName="caisse"
+                >
+                  @for (wallet of wallets.results; track $index) {
+                    <option [ngValue]="wallet.account_code">
+                      Caisse {{ wallet.account_code }}
+                    </option>
+                  }
+                </select>
+                <label for="floatingSelectGrid">Caisse</label>
+              </div>
+            </div>
+            <div class="col-md-12" style="position: relative">
+              <div class="form-floating">
+                <textarea
+                  class="form-control"
+                  placeholder="Leave a comment here"
+                  id="floatingTextarea2"
+                  style="height: 150px"
+                  formControlName="description"
+                ></textarea>
+                <label for="floatingTextarea2">Description</label>
+              </div>
+            </div>
+            <div class="col-md-12" style="position: relative">
+              <div class="form-floating">
+                <input
+                  type="file"
+                  class="form-control"
+                  id="floatingInputGrid"
+                  (change)="onFileSelected($event)"
+                  accept=".jpg,.png,.pdf,.docx,.xlsx"
+                />
+                <label for="floatingTextarea2">Justificatif</label>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancel
+        </button>
+        <button type="button" class="btn btn-primary" (click)="submitProc()">
+          @if (isSubmiting) {
+            <span
+              class="spinner-border spinner-border-sm"
+              aria-hidden="true"
+            ></span>
+          } @else {
+            <span>Save</span>
+          }
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -75,7 +75,7 @@ export class HeaderComponent implements OnInit {
       client: ['', [Validators.required]],
       chambre: new FormControl(0),
       date_arrivee: ['', [Validators.required]],
-      date_depart: ['', [Validators.required]],
+      date_depart: [null, [Validators.required]],
       caisse: ['', [Validators.required]],
       tax: ['', [Validators.required]],
     });
@@ -124,6 +124,7 @@ export class HeaderComponent implements OnInit {
     const data = this.bookingForm.value;
     data['client'] = this.selectedItems.id;
     data['done_by'] = this.operatorId;
+    console.log(data);
     this._book
       .newBooking(data)
       .pipe(takeUntil(this.onDestroy$))

@@ -50,10 +50,17 @@
       <span class="p-2 bg-info-subtle mx-2 rounded">{{
         booking?.date_depart | date: "mediumDate"
       }}</span>
-      <span class="fs-5 fw-bold text-success">
-        {{ booking?.nombre_nuits - 1 }}
-        <span class="text-secondary fw-light">Night(s)</span>
-      </span>
+      @if (booking?.nombre_nuits) {
+        <span class="fs-5 fw-bold text-success">
+          {{ booking?.nombre_nuits - 1 }}
+          <span class="text-secondary fw-light">Night(s)</span>
+        </span>
+      } @else {
+        <span class="fs-5 fw-bold text-success">
+          1
+          <span class="text-secondary fw-light">Night(s)</span>
+        </span>
+      }
     </div>
     <div class="amount d-flex align-items-center">
       <span class="fw-bold text-secondary me-4">Amount :</span>

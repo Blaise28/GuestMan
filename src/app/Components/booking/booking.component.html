@@ -36,17 +36,32 @@
     </thead>
     <tbody>
       @for (item of bookingList.results; track $index) {
-        <tr routerLink="/l/Tdetails/ {{ item.id }}">
+        <tr
+          routerLink="/l/Tdetails/ {{ item.id }}"
+          [@list-transactions]="animationStates[$index]"
+        >
           <td>{{ item.client.nom }} {{ item.client.prenom }}</td>
           <td>{{ item.client.telephone }}</td>
           <td>N0{{ item.chambre.numero }}</td>
           <td>{{ item.date_arrivee | date: "mediumDate" }}</td>
-          <td class="d-flex align-items-center">
-            {{ item.date_depart | date: "mediumDate" }}
-            <span class="badge text-bg-success ms-1">{{
-              item.nombre_nuits
-            }}</span>
-          </td>
+          @if (item.date_depart) {
+            <td class="d-flex align-items-center">
+              {{ item.date_depart | date: "mediumDate" }}
+              <span class="badge text-bg-success ms-1">{{
+                item.nombre_nuits
+              }}</span>
+            </td>
+          } @else {
+            <td class="d-flex align-items-center">
+              <span class="fs-5 text-info d-flex justify-content-center"
+                >∞</span
+              >
+              <span class="badge text-bg-success ms-1">{{
+                item.nombre_nuits
+              }}</span>
+            </td>
+          }
+
           <td>{{ item.prix_total | number }} BIF</td>
           <td>
             @if (item.status && item.status === "INITIAL") {
