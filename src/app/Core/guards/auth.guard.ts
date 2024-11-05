@@ -1,33 +1,21 @@
-import { inject, Injectable } from '@angular/core';
-import { CanActivate, Router, UrlTree } from '@angular/router';
+import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
 import { Store } from '@ngxs/store';
-
-import { Observable } from 'rxjs';
+import { AuthState } from '../../store/auth/auth.state';
 
 // import { Navigate } from '@ngxs/router-plugin';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class AuthGuard implements CanActivate {
-  isAuthenticated$!: Observable<unknown>;
-  isAuthenticated!: boolean;
-  private _store = inject(Store);
-  private _router = inject(Router);
-  token!: string | null;
-
-  constructor() {
-    this.token = localStorage.getItem('accessToken');
+export const authGuard: CanActivateFn = () => {
+  const _store = inject(Store);
+  const route = inject(Router);
+  let localData: boolean | undefined;
+  _store.select(AuthState.isAuthenticated).subscribe((isAuthenticated) => {
+    localData = isAuthenticated;
+  });
+  console.log('guard founds user connected', localData);
+  if (localData) {
+    return true;
   }
-
-  canActivate():
-    | Observable<boolean | UrlTree>
-    | Promise<boolean | UrlTree>
-    | boolean
-    | UrlTree {
-    if (this.token) {
-      return true;
-    }
-    return false;
-  }
-}
+  route.navigate(['/']);
+  return false;
+};

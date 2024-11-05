@@ -47,7 +47,7 @@
               }
             </td>
             <td>{{ item.date | date: "mediumDate" }}</td>
-            <td>{{ item.amount }}</td>
+            <td>{{ item.amount | number }} BIF</td>
             <td>{{ item.description }}</td>
             <td>{{ item.done_by?.nom }} {{ item.done_by?.prenom }}</td>
           </tr>

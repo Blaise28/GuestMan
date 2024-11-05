@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { UserState } from '../../store/dashboard/states/user/user.state';
+import { Logout } from '../../store/auth/auth.actions';
 
 @Component({
   selector: 'app-aside',
@@ -25,5 +26,9 @@ export class AsideComponent implements OnInit {
     this.user$.pipe(takeUntil(this.onDestroy$)).subscribe((data) => {
       this.user = data;
     });
+  }
+
+  logout() {
+    this._store.dispatch(new Logout());
   }
 }

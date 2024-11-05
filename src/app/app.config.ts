@@ -1,6 +1,7 @@
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { withNgxsLoggerPlugin } from '@ngxs/logger-plugin';
+import { withNgxsStoragePlugin } from '@ngxs/storage-plugin';
 import {
   PreloadAllModules,
   provideRouter,
@@ -61,9 +62,9 @@ export const appConfig: ApplicationConfig = {
         TaxState,
         TableState,
       ],
-      // withNgxsStoragePlugin({
-      //   keys: ['auth.token.access'],
-      // }),
+      withNgxsStoragePlugin({
+        keys: ['auth.token.access', 'operator.departement.organisation'],
+      }),
       withNgxsLoggerPlugin(),
     ),
     provideHttpClient(withInterceptors([tokenInterceptor])),
@@ -78,7 +79,6 @@ export const appConfig: ApplicationConfig = {
     Services.ProductService,
     Services.OperatorService,
     Services.OperationService,
-    Guards.AuthGuard,
     Guards.StaffGuard,
   ],
 };

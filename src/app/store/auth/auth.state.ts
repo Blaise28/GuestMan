@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { inject, Injectable } from '@angular/core';
 import {
   Action,
@@ -7,9 +8,10 @@ import {
   StateToken,
   Store,
 } from '@ngxs/store';
-import { setToken } from './auth.actions';
-import { AuthService } from '../../Core/services';
+import { Login, Logout, ResetState } from './auth.actions';
 import { Router } from '@angular/router';
+import { AuthService } from '../../Core/services';
+import { tap } from 'rxjs';
 
 export interface TokenStateModel {
   token: {
@@ -31,10 +33,10 @@ const AUTH_STATE_TOKEN = new StateToken<TokenStateModel>('auth');
 })
 @Injectable()
 export class AuthState {
-  private _auth = inject(AuthService);
+  private _store = inject(Store);
   constructor(
-    private store: Store,
     private router: Router,
+    private authService: AuthService,
   ) {}
 
   @Selector()
@@ -51,15 +53,34 @@ export class AuthState {
     }
     return false;
   }
-  @Action(setToken)
-  getToken(ctx: StateContext<TokenStateModel>) {
-    const accessToken = localStorage.getItem('accessToken');
-    const refreshToken = localStorage.getItem('refreshToken');
-    ctx.patchState({
+  @Action(Login)
+  Login(ctx: StateContext<TokenStateModel>, action: Login) {
+    return this.authService.login(action.payload).pipe(
+      tap((result: any) => {
+        ctx.patchState({
+          token: {
+            access: result.access,
+            refresh: result.refresh,
+          },
+        });
+        return result;
+      }),
+    );
+  }
+  @Action(Logout)
+  logout(ctx: StateContext<TokenStateModel>) {
+    ctx.setState({
       token: {
-        access: accessToken,
-        refresh: refreshToken,
+        access: null,
+        refresh: null,
       },
     });
+    localStorage.clear();
+    this._store.dispatch(new ResetState());
+    this.router.navigate(['/']);
+  }
+  @Action(ResetState)
+  resetState({ setState }: StateContext<any>) {
+    setState({});
   }
 }

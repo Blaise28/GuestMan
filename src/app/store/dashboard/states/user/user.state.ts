@@ -21,10 +21,21 @@ export interface UserStateModel {
   role: string;
   salaire: string;
   photo: string;
+  departement: {
+    id: number;
+    name: string;
+    description: string;
+    created_at: Date;
+    organisation: number;
+  };
+  birthday: Date;
+  marital_status: string;
+  sex: string;
+  is_active: boolean;
 }
 
 @State<UserStateModel>({
-  name: 'user',
+  name: 'operator',
   defaults: {
     id: 0,
     user: {
@@ -41,6 +52,17 @@ export interface UserStateModel {
     role: '',
     salaire: '',
     photo: '',
+    departement: {
+      id: 0,
+      name: '',
+      description: '',
+      created_at: new Date(Date.now()),
+      organisation: 0,
+    },
+    birthday: new Date(Date.now()),
+    marital_status: '',
+    sex: '',
+    is_active: false,
   },
 })
 @Injectable()
@@ -53,6 +75,10 @@ export class UserState {
   @Selector()
   static getUserId(state: UserStateModel): any {
     return state.id;
+  }
+  @Selector()
+  static getOrganisationId(state: UserStateModel): any {
+    return state.departement.organisation;
   }
   @Action(SetUser)
   setUser(ctx: StateContext<UserStateModel>, { payload }: SetUser) {
@@ -79,6 +105,17 @@ export class UserState {
             role: element.role,
             salaire: element.salaire,
             photo: element.photo,
+            departement: {
+              id: element.departement.id,
+              name: element.departement.name,
+              description: element.departement.description,
+              created_at: element.departement.created_at,
+              organisation: element.departement.organisation,
+            },
+            birthday: element.birthday,
+            marital_status: element.marital_status,
+            sex: element.sex,
+            is_active: element.is_active,
           });
         });
         return result;

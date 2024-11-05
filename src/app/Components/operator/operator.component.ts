@@ -11,6 +11,7 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
+import { getOperatorAction } from '../../store/dashboard/states/operator/operator.actions';
 
 @Component({
   selector: 'app-operator',
@@ -66,6 +67,7 @@ export class OperatorComponent {
   }
 
   ngOnInit(): void {
+    this._store.dispatch(new getOperatorAction());
     this.operator$.pipe(takeUntil(this.onDestroy$)).subscribe((data) => {
       this.operator = data;
     });

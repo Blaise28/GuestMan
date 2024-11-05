@@ -10,12 +10,11 @@ import {
 import { MaterialModule } from '../../material/material.module';
 import { Router, RouterLink } from '@angular/router';
 import { Store } from '@ngxs/store';
-import { Observable, Subject } from 'rxjs';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { AuthService } from '../../Core/services';
-import { HttpClient } from '@angular/common/http';
-import { setToken } from '../../store/auth/auth.actions';
+import { Login } from '../../store/auth/auth.actions';
 import { AuthState } from '../../store/auth/auth.state';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -36,9 +35,8 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private _snackBar: MatSnackBar,
+    private toastr: ToastrService,
     private router: Router,
-    private http: HttpClient,
   ) {
     this.authForm = this.fb.group({
       username: ['', [Validators.required]],
@@ -59,25 +57,36 @@ export class LoginComponent implements OnInit {
   connectSub() {
     this.isSubmitting = true;
     if (this.authForm.valid) {
-      this._auth.login(this.authForm.value).subscribe({
-        next: (data: any) => {
-          localStorage.setItem('accessToken', data.access);
-          localStorage.setItem('refreshToken', data.refresh);
-          this._snackBar.open('Logged In Successfully!', 'Dismiss', {
-            duration: 2000,
-          });
-          this._store.dispatch(new setToken());
-          this.authForm.reset();
-          this.router.navigate(['/l']);
-        },
-        error: (error) => {
-          alert('Error: ' + error);
-        },
-      });
+      this._store
+        .dispatch(new Login(this.authForm.value))
+        .pipe(takeUntil(this.onDestroy$))
+        .subscribe({
+          next: (res) => {
+            console.log(res);
+            this.authForm.reset();
+            this.isSubmitting = false;
+            this.toastr.success('Login success!', 'Success!');
+            this.router.navigate(['/l']);
+          },
+          error: (err) => {
+            console.error('Error:', err);
+            this.toastr.error('Incorrect Password or Username', 'Error');
+            this.isSubmitting = false;
+          },
+        });
     }
   }
   public ngOnDestroy(): void {
     this.onDestroy$.next();
     this.onDestroy$.complete();
+  }
+
+  showPass() {
+    const x: any = document.getElementById('passInput');
+    if (x.type === 'password') {
+      x.type = 'text';
+    } else {
+      x.type = 'password';
+    }
   }
 }

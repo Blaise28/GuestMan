@@ -18,9 +18,9 @@ import { ToastrService } from 'ngx-toastr';
 import { getBookingAction } from '../../store/dashboard/states/booking/booking.actions';
 import { map } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogComponent } from '../../Global/dialog/dialog.component';
 import { WalletState } from '../../store/dashboard/states/wallets/wallet.state';
 import { TaxState } from '../../store/dashboard/states/tax/tax.state';
+import { Logout } from '../../store/auth/auth.actions';
 
 @Component({
   selector: 'app-header',
@@ -157,7 +157,8 @@ export class HeaderComponent implements OnInit {
   }
 
   logout() {
-    this.dialog.open(DialogComponent);
+    this._store.dispatch(new Logout());
+    //this.dialog.open(DialogComponent);
   }
 
   SendDataonChange(event: any) {

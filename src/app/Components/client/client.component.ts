@@ -95,6 +95,7 @@ export class ClientComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this._store.dispatch(new getClientAction());
     this.client$.pipe(takeUntil(this.onDestroy$)).subscribe((data) => {
       this.client = data;
     });

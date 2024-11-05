@@ -1,4 +1,4 @@
-<header class="p-3 mb-3 border-bottom" style="position: sticky">
+<header class="p-3 border-bottom" style="position: sticky">
   <div class="container">
     <div
       class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start"
@@ -57,7 +57,7 @@
             height="32"
             class="rounded-circle"
           />
-          <strong> {{ user.user.username }} </strong>
+          <strong style="color: whitesmoke"> {{ user.user.username }} </strong>
         </a>
         <ul class="dropdown-menu text-small">
           <li><a class="dropdown-item" (click)="logout()">Sign out</a></li>
