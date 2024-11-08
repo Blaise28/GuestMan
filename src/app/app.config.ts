@@ -36,6 +36,7 @@ import { TransactionState } from './store/dashboard/states/transaction/transacti
 import { ProcurementState } from './store/dashboard/states/procurement/procurement.state';
 import { TaxState } from './store/dashboard/states/tax/tax.state';
 import { TableState } from './store/dashboard/states/table/table.state';
+import { withNgxsResetPlugin } from 'ngxs-reset-plugin';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -66,6 +67,7 @@ export const appConfig: ApplicationConfig = {
         keys: ['auth.token.access', 'operator.departement.organisation'],
       }),
       withNgxsLoggerPlugin(),
+      withNgxsResetPlugin(),
     ),
     provideHttpClient(withInterceptors([tokenInterceptor])),
     provideAnimations(), // required animations providers

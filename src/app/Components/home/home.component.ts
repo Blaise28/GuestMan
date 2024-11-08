@@ -74,11 +74,11 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.transactionList$.pipe(takeUntil(this.onDestroy$)).subscribe((data) => {
       this.transactionList = data;
+      this.getStats();
     });
     this.caisse$.pipe(takeUntil(this.onDestroy$)).subscribe((data) => {
-      this.caisse = data.results;
+      this.caisse = data?.results;
     });
-    this.getStats();
   }
   getStats() {
     this.operatorService.getStats().subscribe({

@@ -6,7 +6,7 @@
     </div>
     <div class="d-flex flex-column ms-3 text-success-emphasis">
       <span class="fs-4 fw-bold"> {{ procurement?.count }} </span>
-      <small>Total Tanents</small>
+      <small>Total Procurements</small>
     </div>
   </div>
   <div class="d-flex align-items-center col-3">
@@ -81,7 +81,7 @@
                   id="floatingSelectGrid"
                   formControlName="caisse"
                 >
-                  @for (wallet of wallets.results; track $index) {
+                  @for (wallet of wallets?.results; track $index) {
                     <option [ngValue]="wallet.account_code">
                       Caisse {{ wallet.account_code }}
                     </option>

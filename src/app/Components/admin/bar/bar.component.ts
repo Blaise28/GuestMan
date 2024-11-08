@@ -54,7 +54,7 @@ export class BarComponent implements OnInit {
   ngOnInit(): void {
     this._store.dispatch(new getProductAction());
     this.productList$.pipe(takeUntil(this.onDestroy$)).subscribe((data) => {
-      this.productList = data.allProduct;
+      this.productList = data?.allProduct;
     });
     this.category$.pipe(takeUntil(this.onDestroy$)).subscribe((data) => {
       this.category = data;

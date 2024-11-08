@@ -35,6 +35,7 @@
     "luxon": "^3.5.0",
     "ngx-print": "^1.5.1",
     "ngx-toastr": "^19.0.0",
+    "ngxs-reset-plugin": "^4.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"

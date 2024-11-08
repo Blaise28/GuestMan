@@ -40,11 +40,13 @@
           <span class="badge text-bg-success d-flex align-items-center"
             >Untaken</span
           >
-          <span class="ms-2 fs-5 fw-bold text-success">8</span>
+          <span class="ms-2 fs-5 fw-bold text-success">
+            {{ stats?.left }}
+          </span>
         </div>
       </div>
     </div>
-    @for (item of caisse.slice(0, 1); track $index) {
+    @for (item of caisse?.slice(0, 1); track $index) {
       <div
         class="m-3"
         style="
@@ -117,7 +119,7 @@
           </tr>
         </thead>
         <tbody>
-          @for (item of transactionList.results.slice(0, 10); track $index) {
+          @for (item of transactionList?.slice(0, 10); track $index) {
             <tr [@list-transactions]="animationStates[$index]">
               <td>
                 @if (item.type_transaction === "ENTREE") {

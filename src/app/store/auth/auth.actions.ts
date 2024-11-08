@@ -8,14 +8,10 @@ export class Login {
   ) {}
 }
 
-export class setToken {
-  static readonly type = '[Token] Set Token';
+export class getOrganisation {
+  static readonly type = '[Org] Get Organisation';
 }
 
 export class Logout {
   static readonly type = '[Auth] Logout';
-}
-
-export class ResetState {
-  static readonly type = '[State] Reset';
 }

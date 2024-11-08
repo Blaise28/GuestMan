@@ -5,29 +5,14 @@ import { tap } from 'rxjs';
 import { CaisseService } from '../../../../Core/services';
 import { getTransactionAction } from './transaction.actions';
 
-export interface OrderStateModel {
-  code: number;
-  reservation: number;
-  placed_at: Date;
-  amount_total: number;
-  items: [];
-  status: string;
-}
-
 export interface ListModel {
-  count: number;
-  next: unknown;
-  previous: unknown;
-  results: OrderStateModel[];
+  allTransaction: any[];
 }
 
 @State<ListModel>({
   name: 'transactionList',
   defaults: {
-    count: 0,
-    next: null,
-    previous: null,
-    results: [],
+    allTransaction: [],
   },
 })
 @Injectable()
@@ -36,7 +21,9 @@ export class TransactionState {
   constructor(private caisseService: CaisseService) {}
   @Selector()
   static getTransaction(state: any): any {
-    return state;
+    if (state) {
+      return state.allTransaction;
+    }
   }
 
   @Action(getTransactionAction)
@@ -44,10 +31,7 @@ export class TransactionState {
     return this.caisseService.getTransactions().pipe(
       tap((result: any) => {
         ctx.patchState({
-          count: result.count,
-          next: result.next,
-          previous: result.previous,
-          results: result.results,
+          allTransaction: result,
         });
         return result;
       }),

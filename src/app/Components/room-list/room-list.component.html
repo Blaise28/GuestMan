@@ -32,7 +32,7 @@
     </div>
   </div>
   <div class="list row">
-    @for (item of roomList.results; track $index) {
+    @for (item of roomList?.results; track $index) {
       <div class="col-4" [@list-transactions]="animationStates[$index]">
         <app-room-card
           [room]="item"

@@ -8,7 +8,6 @@ export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
   const localeId = inject(LOCALE_ID);
   const store = inject(Store);
   const organisation = store.selectSnapshot(UserState.getOrganisationId);
-  console.log(organisation);
   const headersConfig = {
     'Content-Type': 'application/json',
     'Accept-Language': localeId,

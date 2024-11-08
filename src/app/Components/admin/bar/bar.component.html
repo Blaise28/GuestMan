@@ -117,7 +117,7 @@
                 aria-label="Floating label select example"
                 formControlName="category"
               >
-                @for (item of category.allCategory; track $index) {
+                @for (item of category?.allCategory; track $index) {
                   <option [ngValue]="item.id">{{ item.nom }}</option>
                 }
               </select>

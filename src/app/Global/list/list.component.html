@@ -16,7 +16,6 @@
       <tbody>
         @for (item of data; track $index) {
           <tr routerLink="/l/Tdetails/ {{ item.id }}">
-            <td>{{ item.id }}</td>
             <td>{{ item.amount | number }} BIF</td>
             <td>{{ item.description }}</td>
             <td>{{ item.Operator.nom }} {{ item.Operator.prenom }}</td>

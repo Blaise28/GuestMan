@@ -1,12 +1,12 @@
-<h3>Procurement Overview</h3>
+<h3>Transactions Overview</h3>
 <div class="d-flex align-items-center bg-light rounded p-3 row">
   <div class="d-flex align-items-center col-3">
     <div class="p-2 bg-success-subtle rounded">
       <i class="fa-solid fa-user-group fs-4 text-success"></i>
     </div>
     <div class="d-flex flex-column ms-3 text-success-emphasis">
-      <span class="fs-4 fw-bold"> {{ transaction?.count }} </span>
-      <small>Total Tanents</small>
+      <span class="fs-4 fw-bold"> {{ transaction?.length }} </span>
+      <small>Total Transactions</small>
     </div>
   </div>
   <div class="d-flex align-items-center col-3">
@@ -32,9 +32,9 @@
         </tr>
       }
     </thead>
-    @if (transaction.results.length > 0) {
+    @if (transaction.length > 0) {
       <tbody>
-        @for (item of transaction.results; track $index) {
+        @for (item of transaction; track $index) {
           <tr
             routerLink="/l/Tdetails/ {{ item.id }}"
             [@list-transactions]="animationStates[$index]"

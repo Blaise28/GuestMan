@@ -5,6 +5,7 @@ import { Store } from '@ngxs/store';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { UserState } from '../../store/dashboard/states/user/user.state';
 import { Logout } from '../../store/auth/auth.actions';
+import { AuthState } from '../../store/auth/auth.state';
 
 @Component({
   selector: 'app-aside',
@@ -18,13 +19,19 @@ export class AsideComponent implements OnInit {
   user$!: Observable<any>;
   protected onDestroy$: Subject<void> = new Subject<void>();
   user!: any;
+  organisation$!: Observable<any>;
+  organisation!: any;
   constructor() {
     this.user$ = this._store.select(UserState.getUser);
+    this.organisation$ = this._store.select(AuthState.getOrganisation);
   }
 
   ngOnInit(): void {
     this.user$.pipe(takeUntil(this.onDestroy$)).subscribe((data) => {
       this.user = data;
+    });
+    this.organisation$.pipe(takeUntil(this.onDestroy$)).subscribe((data) => {
+      this.organisation = data;
     });
   }
 

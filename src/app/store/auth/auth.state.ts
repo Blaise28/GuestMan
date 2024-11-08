@@ -8,10 +8,11 @@ import {
   StateToken,
   Store,
 } from '@ngxs/store';
-import { Login, Logout, ResetState } from './auth.actions';
+import { getOrganisation, Login, Logout } from './auth.actions';
 import { Router } from '@angular/router';
 import { AuthService } from '../../Core/services';
 import { tap } from 'rxjs';
+import { StateClear } from 'ngxs-reset-plugin';
 
 export interface TokenStateModel {
   token: {
@@ -19,8 +20,21 @@ export interface TokenStateModel {
     refresh: string | null;
   };
 }
+export interface OrganisationModel {
+  organisation: {
+    id: number | null;
+    name: string;
+    adresse: string;
+    is_active: boolean;
+    capacity: number | null;
+    created_at: Date | number;
+    fisc_number: string;
+    cover_picture: string;
+  };
+}
 
 const AUTH_STATE_TOKEN = new StateToken<TokenStateModel>('auth');
+const CONNECTED_ORGANISATION = new StateToken<OrganisationModel>('org');
 
 @State<TokenStateModel>({
   name: AUTH_STATE_TOKEN,
@@ -28,6 +42,21 @@ const AUTH_STATE_TOKEN = new StateToken<TokenStateModel>('auth');
     token: {
       access: null,
       refresh: null,
+    },
+  },
+})
+@State<OrganisationModel>({
+  name: CONNECTED_ORGANISATION,
+  defaults: {
+    organisation: {
+      id: null,
+      name: '',
+      adresse: '',
+      is_active: false,
+      capacity: null,
+      created_at: Date.now(),
+      fisc_number: '',
+      cover_picture: '',
     },
   },
 })
@@ -40,8 +69,17 @@ export class AuthState {
   ) {}
 
   @Selector()
-  static getToken(state: TokenStateModel): string | null {
-    return state.token.access;
+  static getToken(state: TokenStateModel): any {
+    if (state) {
+      return state.token.access;
+    }
+    //
+  }
+  @Selector()
+  static getOrganisation(state: OrganisationModel): any {
+    if (state) {
+      return state.organisation;
+    }
   }
   @Selector()
   static isAuthenticated(state: TokenStateModel): boolean | undefined {
@@ -67,6 +105,27 @@ export class AuthState {
       }),
     );
   }
+
+  @Action(getOrganisation)
+  getOrg(ctx: StateContext<OrganisationModel>) {
+    return this.authService.getOrganisation().pipe(
+      tap((result: any) => {
+        ctx.patchState({
+          organisation: {
+            id: result.id,
+            name: result.name,
+            adresse: result.adresse,
+            is_active: result.is_active,
+            capacity: result.capacity,
+            created_at: result.created_at,
+            fisc_number: result.fisc_number,
+            cover_picture: result.cover_picture,
+          },
+        });
+        return result;
+      }),
+    );
+  }
   @Action(Logout)
   logout(ctx: StateContext<TokenStateModel>) {
     ctx.setState({
@@ -76,11 +135,7 @@ export class AuthState {
       },
     });
     localStorage.clear();
-    this._store.dispatch(new ResetState());
+    this._store.dispatch(new StateClear());
     this.router.navigate(['/']);
-  }
-  @Action(ResetState)
-  resetState({ setState }: StateContext<any>) {
-    setState({});
   }
 }

@@ -35,7 +35,7 @@
       </tr>
     </thead>
     <tbody>
-      @for (item of bookingList.results; track $index) {
+      @for (item of bookingList?.results; track $index) {
         <tr
           routerLink="/l/Tdetails/ {{ item.id }}"
           [@list-transactions]="animationStates[$index]"

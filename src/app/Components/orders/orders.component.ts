@@ -42,7 +42,7 @@ export class OrdersComponent implements OnInit {
 
   ngOnInit(): void {
     this.bills$.pipe(takeUntil(this.onDestroy$)).subscribe((data) => {
-      this.bills = data.results;
+      this.bills = data?.results;
     });
   }
   readonly range = new FormGroup({

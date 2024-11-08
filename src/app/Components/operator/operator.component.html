@@ -33,7 +33,7 @@
       </tr>
     </thead>
     <tbody>
-      @for (item of operator.results; track $index) {
+      @for (item of operator?.results; track $index) {
         <tr
           routerLink="/l/Odetails/ {{ item.id }}"
           [@list-transactions]="animationStates[$index]"

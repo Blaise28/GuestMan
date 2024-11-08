@@ -95,7 +95,9 @@ export class HeaderComponent implements OnInit {
       .pipe(
         takeUntil(this.onDestroy$),
         map((data: any) => {
-          return data.results.filter((result) => result.disponibilite === true);
+          return data?.results.filter(
+            (result) => result.disponibilite === true,
+          );
         }),
       )
       .subscribe((data) => {

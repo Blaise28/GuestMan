@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { inject, Injectable } from '@angular/core';
-import { Action, Selector, State, StateContext } from '@ngxs/store';
+import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import { Populate, SetUser } from './user.actions';
 import { tap } from 'rxjs';
 import { AuthService } from '../../../../Core/services';
+import { getTransactionAction } from '../transaction/transaction.actions';
+import { getWalletAction } from '../wallets/wallet.actions';
 
 export interface UserStateModel {
   id: number;
@@ -67,6 +69,7 @@ export interface UserStateModel {
 })
 @Injectable()
 export class UserState {
+  private _store = inject(Store);
   private _authService = inject(AuthService);
   @Selector()
   static getUser(state: UserStateModel): UserStateModel {
@@ -74,11 +77,15 @@ export class UserState {
   }
   @Selector()
   static getUserId(state: UserStateModel): any {
-    return state.id;
+    if (state) {
+      return state.id;
+    }
   }
   @Selector()
   static getOrganisationId(state: UserStateModel): any {
-    return state.departement.organisation;
+    if (state) {
+      return state.departement.organisation;
+    }
   }
   @Action(SetUser)
   setUser(ctx: StateContext<UserStateModel>, { payload }: SetUser) {
@@ -88,36 +95,36 @@ export class UserState {
   getUser(ctx: StateContext<UserStateModel>) {
     return this._authService.populate().pipe(
       tap((result: any) => {
-        result.forEach((element) => {
-          ctx.patchState({
-            id: element.id,
-            user: {
-              id: element.user.id,
-              username: element.user.username,
-              last_login: element.user.last_login,
-              date_joined: element.user.date_joined,
-              is_staff: element.user.is_staff,
-            },
-            nom: element.nom,
-            prenom: element.prenom,
-            adresse: element.adresse,
-            telephone: element.telephone,
-            role: element.role,
-            salaire: element.salaire,
-            photo: element.photo,
-            departement: {
-              id: element.departement.id,
-              name: element.departement.name,
-              description: element.departement.description,
-              created_at: element.departement.created_at,
-              organisation: element.departement.organisation,
-            },
-            birthday: element.birthday,
-            marital_status: element.marital_status,
-            sex: element.sex,
-            is_active: element.is_active,
-          });
+        ctx.patchState({
+          id: result.id,
+          user: {
+            id: result.user.id,
+            username: result.user.username,
+            last_login: result.user.last_login,
+            date_joined: result.user.date_joined,
+            is_staff: result.user.is_staff,
+          },
+          nom: result.nom,
+          prenom: result.prenom,
+          adresse: result.adresse,
+          telephone: result.telephone,
+          role: result.role,
+          salaire: result.salaire,
+          photo: result.photo,
+          departement: {
+            id: result.departement.id,
+            name: result.departement.name,
+            description: result.departement.description,
+            created_at: result.departement.created_at,
+            organisation: result.departement.organisation,
+          },
+          birthday: result.birthday,
+          marital_status: result.marital_status,
+          sex: result.sex,
+          is_active: result.is_active,
         });
+        this._store.dispatch(new getWalletAction());
+        this._store.dispatch(new getTransactionAction());
         return result;
       }),
     );

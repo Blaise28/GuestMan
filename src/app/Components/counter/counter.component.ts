@@ -8,7 +8,6 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ProductCardComponent } from '../../Global/product-card/product-card.component';
-import { ButtonComponent } from '../../Global/button/button.component';
 import { TimeComponent } from '../../Global/time/time.component';
 import { CommonModule } from '@angular/common';
 import {
@@ -36,7 +35,6 @@ import { WalletState } from '../../store/dashboard/states/wallets/wallet.state';
   standalone: true,
   imports: [
     ProductCardComponent,
-    ButtonComponent,
     TimeComponent,
     CommonModule,
     FormsModule,
@@ -108,22 +106,22 @@ export class CounterComponent implements OnInit {
   ngOnInit(): void {
     //
     this.tableNumber$.pipe(takeUntil(this.onDestroy$)).subscribe((data) => {
-      this.tableNumber = data.results;
+      this.tableNumber = data?.results;
     });
     this.bookingList$.pipe(takeUntil(this.onDestroy$)).subscribe((data) => {
-      this.bookingList = data.results;
+      this.bookingList = data?.results;
     });
     this.productList$.pipe(takeUntil(this.onDestroy$)).subscribe((data) => {
-      this.productList = data.allProduct;
+      this.productList = data?.allProduct;
     });
     this.category$.pipe(takeUntil(this.onDestroy$)).subscribe((data) => {
-      this.category = data.allCategory;
+      this.category = data?.allCategory;
     });
     this.operatorId$.pipe(takeUntil(this.onDestroy$)).subscribe((data) => {
       this.operatorId = data;
     });
     this.wallets$.pipe(takeUntil(this.onDestroy$)).subscribe((data) => {
-      this.wallets = data.results[0];
+      this.wallets = data?.results[0];
     });
   }
   setRefreshTime() {
@@ -190,7 +188,7 @@ export class CounterComponent implements OnInit {
     this.selectedCategory = event;
     this._productService.getProductByCategory(event).subscribe({
       next: (res: any) => {
-        this.productList = res.results;
+        this.productList = res?.results;
       },
     });
   }
@@ -225,7 +223,7 @@ export class CounterComponent implements OnInit {
     if (this.search.value) {
       this._productService.search(this.search.value).subscribe({
         next: (res: any) => {
-          this.productList = res.results;
+          this.productList = res?.results;
         },
         error: (error) => {
           console.error(error);

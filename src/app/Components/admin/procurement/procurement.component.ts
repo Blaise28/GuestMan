@@ -84,7 +84,7 @@ export class ProcurementComponent implements OnInit {
   wallets$!: Observable<any>;
   wallets!: any;
   protected onDestroy$: Subject<void> = new Subject<void>();
-  header = ['Id', 'amount', 'description', 'Operator', 'Date'];
+  header = ['Amount', 'Description', 'Operator', 'Date'];
   isSubmiting: boolean = false;
 
   constructor(

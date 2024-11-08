@@ -36,4 +36,11 @@ export class AuthService {
       }),
     );
   }
+  getOrganisation() {
+    return this.apiService.get('/connected-org/').pipe(
+      map((data) => {
+        return data;
+      }),
+    );
+  }
 }

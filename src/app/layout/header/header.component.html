@@ -21,7 +21,7 @@
       <ul
         class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0"
       >
-        @if (user.user.is_staff) {
+        @if (user?.user.is_staff) {
           <li>
             <button
               class="px-4 py-2 btn btn-success"
@@ -57,7 +57,7 @@
             height="32"
             class="rounded-circle"
           />
-          <strong style="color: whitesmoke"> {{ user.user.username }} </strong>
+          <strong style="color: whitesmoke"> {{ user?.user.username }} </strong>
         </a>
         <ul class="dropdown-menu text-small">
           <li><a class="dropdown-item" (click)="logout()">Sign out</a></li>
@@ -188,7 +188,7 @@
                   id="floatingSelectGrid"
                   formControlName="caisse"
                 >
-                  @for (wallet of wallets.results; track $index) {
+                  @for (wallet of wallets?.results; track $index) {
                     <option [ngValue]="wallet.account_code">
                       Caisse {{ wallet.account_code }}
                     </option>
@@ -204,7 +204,7 @@
                   id="floatingSelectGrid"
                   formControlName="tax"
                 >
-                  @for (tax of tax.results; track $index) {
+                  @for (tax of tax?.results; track $index) {
                     <option [ngValue]="tax.id">
                       {{ tax.name }} {{ tax.rate }}%
                     </option>
